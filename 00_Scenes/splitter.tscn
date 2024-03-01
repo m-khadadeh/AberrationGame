@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://n4q8jns8mfmx"]
+
+[ext_resource type="Script" path="res://01_Scripts/splitter.gd" id="1_j11w1"]
+
+[node name="Splitter" type="Node2D"]
+script = ExtResource("1_j11w1")
+max_distance_btw_markers = 250.0
+lerp_speed = 2.0
+height_padding = 50.0
+
+[node name="Marker2DStart" type="Marker2D" parent="."]
+modulate = Color(0.639216, 0, 0.643137, 1)
+scale = Vector2(30, 30)
+
+[node name="Marker2DEnd" type="Marker2D" parent="."]
+modulate = Color(0, 0.482353, 0.482353, 1)
+scale = Vector2(30, 30)
+
+[node name="Line2D" type="Line2D" parent="."]
