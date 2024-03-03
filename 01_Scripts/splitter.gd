@@ -1,3 +1,5 @@
+class_name Splitter
+
 extends Node2D
 
 @export var max_distance_btw_markers : float
@@ -60,10 +62,6 @@ func _process(delta):
 	line_renderer.points = _endpoints
 
 func get_line_data() -> LineData:
-	var line_data = LineData.new()
-	
-	line_data.direction_vector = (_endpoints[1] - _endpoints[0]).normalized()
-	line_data.single_point = _endpoints[0]
-	line_data.extent_points = _endpoints
+	var line_data = LineData.new(_endpoints[0], (_endpoints[1] - _endpoints[0]).normalized())
 	
 	return line_data

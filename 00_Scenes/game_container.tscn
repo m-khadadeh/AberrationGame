@@ -4,3 +4,4 @@
 
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
+split_padding = 7.0
