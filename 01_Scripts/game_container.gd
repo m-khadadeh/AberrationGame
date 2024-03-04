@@ -14,8 +14,6 @@ var current_state : GameState
 @export var start_state : GameState
 @export var split_padding : float
 
-
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	_screen_corners.append(Vector2(0,0))
@@ -64,7 +62,8 @@ func _input(event):
 				switch_state_to(GameState.SLICING)
 		GameState.SLICING:
 			if event.is_action_pressed("left_click"):
-				switch_state_to(GameState.SELECTING_BUTTONS)
+				if _current_splitter.advance_on_click():
+					switch_state_to(GameState.SELECTING_BUTTONS)
 
 func switch_state_to(new_state : GameState):
 	# State exit logic
@@ -74,6 +73,7 @@ func switch_state_to(new_state : GameState):
 		GameState.SLICING:
 			var line_data = _current_splitter.get_line_data()
 			_line_array.append(line_data)
+			recalculate_points_of_intersection()
 			var polygons_to_append : Array
 			for polygon in _polygon_array:
 				var new_polys = polygon.split_across_line(line_data)
@@ -86,7 +86,6 @@ func switch_state_to(new_state : GameState):
 					polygons_to_append.append(new_poly)
 			for polygon in polygons_to_append:
 				_polygon_array.append(polygon)
-			
 			_current_splitter.queue_free()
 			
 	# State enter logic
@@ -96,6 +95,7 @@ func switch_state_to(new_state : GameState):
 		GameState.SLICING:
 			var new_splitter = splitter_scene.instantiate()
 			add_child(new_splitter)
+			new_splitter.initialize(_points_of_intersection)
 			_current_splitter = new_splitter
 			
 	current_state = new_state

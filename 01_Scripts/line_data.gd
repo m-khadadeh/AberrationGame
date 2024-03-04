@@ -27,3 +27,15 @@ func get_point_relationship(point : Vector2) -> PointRelationship:
 		return PointRelationship.RIGHT
 	else:
 		return PointRelationship.LEFT
+
+func similar_within_tolerance(a : float, b : float, tolerance : float) -> bool:
+	return abs(a - b) < tolerance
+
+func contains_point(point : Vector2, tolerance : float) -> bool:
+	var x_param = (point.x - single_point.x) / direction_vector.x
+	var y_param = (point.y - single_point.y) / direction_vector.y
+	return similar_within_tolerance(x_param, y_param, tolerance)
+
+func is_parallel(line : LineData, tolerance : float) -> bool:
+	return similar_within_tolerance(direction_vector.x, line.direction_vector.x, tolerance) and \
+	similar_within_tolerance(direction_vector.y, line.direction_vector.y, tolerance)
