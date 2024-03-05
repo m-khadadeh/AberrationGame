@@ -9,14 +9,6 @@ extends Polygon2D
 var _polygon_verts : Array
 var _segment_array: Array
 var _edge_dictionary : Dictionary
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 	
 func initialize(edge_dictionary : Dictionary, polygon_color : Color):
 	_edge_dictionary = edge_dictionary
@@ -41,8 +33,8 @@ func split_across_line(line : LineData) -> Array:
 		if line.contains_point(_segment_array[segment_index]._point_extents[0], error_tolerance) and \
 		line.is_parallel(_segment_array[segment_index]._line, error_tolerance):
 			print("Coincident")
-			# line coincides wth segment.
-			return [_edge_dictionary]
+			# line coincides wth segment within tolerance
+			return []
 		
 		var point_of_intersect = _segment_array[segment_index].get_intersection(line)
 		if point_of_intersect.x != INF:

@@ -99,7 +99,6 @@ func switch_state(new_state : State):
 
 func hover_check():
 	# If the button can reach or leave a hovered state, then check and move accordingly
-	# print("Hover check values: " + str(_mouse_on_button) + " " + str(_mouse_on_gutters))
 	match state:
 		State.NORMAL:
 			if _can_select_buttons and _mouse_on_button and not _mouse_on_gutters:

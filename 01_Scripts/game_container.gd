@@ -55,7 +55,7 @@ func _process(delta):
 func _create_button(edge_dictionary : Dictionary) -> SplittableButton:
 	var new_button : SplittableButton
 	new_button = _button_scene.instantiate()
-	add_child(new_button)
+	_button_parent.add_child(new_button)
 	
 	new_button.initialize(edge_dictionary, _gutter_parent)
 	
@@ -69,7 +69,45 @@ func _input(event):
 		GameState.SLICING:
 			if event.is_action_pressed("left_click"):
 				if _current_splitter.advance_on_click():
-					switch_state_to(GameState.SELECTING_BUTTONS)
+					if do_split():
+						switch_state_to(GameState.SELECTING_BUTTONS)
+					else:
+						print("Split failed. Try again")
+						switch_state_to(GameState.SLICING)
+
+func do_split() -> bool:
+	var line_data = _current_splitter.get_line_data()
+	_line_array.append(line_data)
+	recalculate_points_of_intersection()
+	var buttons_to_append : Array
+	var buttons_to_split : Dictionary
+	var safe_to_continue = true
+	for i in range(_button_array.size()):
+		var new_button_dicts = _button_array[i].split_across_line(line_data)
+		if new_button_dicts.size() == 0:
+			# The splitter was not placed well. Do not split anything
+			safe_to_continue = false
+			break
+		elif new_button_dicts.size() > 1:
+			# We are safe
+			buttons_to_split[i] = new_button_dicts[0]
+			buttons_to_append.append(new_button_dicts[1])
+	_current_splitter.queue_free()
+	if safe_to_continue:
+		for button in buttons_to_split:
+			_button_array[button].initialize(buttons_to_split[button], _gutter_parent, false)
+		for button in buttons_to_append:
+			_button_array.append(_create_button(button))
+			
+		var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
+		var gutter_points : PackedVector2Array
+		gutter_points.append(line_data.drawing_endpoints[0] + scaled_normal_vector)
+		gutter_points.append(line_data.drawing_endpoints[0] - scaled_normal_vector)
+		gutter_points.append(line_data.drawing_endpoints[1] - scaled_normal_vector)
+		gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
+		_gutter_parent.add_gutter(gutter_points)
+		return true
+	return false
 
 func switch_state_to(new_state : GameState):
 	# State exit logic
@@ -77,31 +115,7 @@ func switch_state_to(new_state : GameState):
 		GameState.SELECTING_BUTTONS:
 			pass
 		GameState.SLICING:
-			var line_data = _current_splitter.get_line_data()
-			_line_array.append(line_data)
-			recalculate_points_of_intersection()
-			var buttons_to_append : Array
-			for button in _button_array:
-				var new_button_dicts = button.split_across_line(line_data)
-				if new_button_dicts.size() != 1:
-					button.initialize(new_button_dicts[0], _gutter_parent, false)
-					var new_button : SplittableButton
-					new_button = _button_scene.instantiate()
-					_button_parent.add_child(new_button)
-					new_button.initialize(new_button_dicts[1], _gutter_parent)
-					buttons_to_append.append(new_button)
-			for button in buttons_to_append:
-				_button_array.append(button)
-			
-			var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
-			var gutter_points : PackedVector2Array
-			gutter_points.append(line_data.drawing_endpoints[0] + scaled_normal_vector)
-			gutter_points.append(line_data.drawing_endpoints[0] - scaled_normal_vector)
-			gutter_points.append(line_data.drawing_endpoints[1] - scaled_normal_vector)
-			gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
-			_gutter_parent.add_gutter(gutter_points)
-			
-			_current_splitter.queue_free()
+			pass
 			
 	# State enter logic
 	match new_state:

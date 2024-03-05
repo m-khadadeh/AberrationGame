@@ -5,11 +5,13 @@ extends Node2D
 @export var height_padding : float
 @export var snap_range: float
 
-@onready var _start_marker = $Marker2DStart
-@onready var _start_marker_sprite = $Marker2DStart/Sprite2D
-@onready var _end_marker = $Marker2DEnd
-@onready var _end_marker_sprite = $Marker2DEnd/Sprite2D
-@onready var _line_renderer = $Line2D
+@onready var _start_marker : Marker2D = $Marker2DStart
+@onready var _start_marker_sprite : Sprite2D = $Marker2DStart/PointerSprite
+@onready var _start_marker_snap_sprite : Sprite2D = $Marker2DStart/SnapSprite
+@onready var _end_marker : Marker2D = $Marker2DEnd
+@onready var _end_marker_sprite : Sprite2D = $Marker2DEnd/PointerSprite
+@onready var _end_marker_snap_sprite : Sprite2D = $Marker2DEnd/SnapSprite
+@onready var _line_renderer : Line2D = $Line2D
 
 var _screen_size : Vector2
 var _line_slope : float
@@ -29,7 +31,9 @@ func _ready():
 	_end_marker.position = get_global_mouse_position()
 	_start_marker_sprite.visible = false
 	_end_marker_sprite.visible = false
-	_state = State.SELECTING_POINT_1
+	_start_marker_snap_sprite.visible = false
+	_end_marker_snap_sprite.visible = false
+	change_state(State.SELECTING_POINT_1)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -39,18 +43,18 @@ func _process(delta):
 			var snap_value = process_snap_logic(_mouse_position)
 			if snap_value > -1:
 				_start_marker.position = _snap_points[snap_value]
-				_start_marker_sprite.visible = true
+				_start_marker_snap_sprite.visible = true
 			else:
 				_start_marker.position = _mouse_position
-				_start_marker_sprite.visible = false
+				_start_marker_snap_sprite.visible = false
 		State.SELECTING_POINT_2:
 			var snap_value = process_snap_logic(_mouse_position)
 			if snap_value > -1:
 				_end_marker.position = _snap_points[snap_value]
-				_end_marker_sprite.visible = true
+				_end_marker_snap_sprite.visible = true
 			else:
 				_end_marker.position = _mouse_position
-				_end_marker_sprite.visible = false
+				_end_marker_snap_sprite.visible = false
 			_difference_btw_points = _end_marker.position - _start_marker.position
 
 			_line_slope = _difference_btw_points.y / _difference_btw_points.x
@@ -88,7 +92,8 @@ func change_state(state : State):
 	# exit conditions
 	match _state:
 		State.SELECTING_POINT_1:
-			_start_marker_sprite.visible = true
+			_start_marker_sprite.visible = false
+			_start_marker_snap_sprite.visible = true
 		State.SELECTING_POINT_2:
 			pass
 		State.APPLYING:
@@ -99,14 +104,18 @@ func change_state(state : State):
 	match _state:
 		State.SELECTING_POINT_1:
 			_line_renderer.visible = false
-			_start_marker_sprite.visible = false
+			_start_marker_sprite.visible = true
+			_start_marker_snap_sprite.visible = false
 		State.SELECTING_POINT_2:
 			_line_renderer.visible = true
-			_end_marker_sprite.visible = false
+			_end_marker_sprite.visible = true
+			_end_marker_snap_sprite.visible = false
 		State.APPLYING:
 			_line_renderer.visible = false
 			_start_marker_sprite.visible = false
 			_end_marker_sprite.visible = false
+			_start_marker_snap_sprite.visible = false
+			_end_marker_snap_sprite.visible = false
 
 func get_line_data() -> LineData:
 	var line_data = LineData.new(_endpoints[0], (_endpoints[1] - _endpoints[0]).normalized(), _endpoints)
