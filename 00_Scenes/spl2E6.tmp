@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://8fgnngbkp6og"]
+
+[ext_resource type="Script" path="res://01_Scripts/splittable_button.gd" id="1_00cop"]
+[ext_resource type="PackedScene" uid="uid://bi2tij4ucel8j" path="res://00_Scenes/splittable_polygon.tscn" id="1_4nu50"]
+
+[node name="SplittableButton" type="Node2D"]
+script = ExtResource("1_00cop")
+
+[node name="SplittablePolygon" parent="." instance=ExtResource("1_4nu50")]

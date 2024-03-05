@@ -3,7 +3,8 @@ extends Polygon2D
 
 @export var error_tolerance : float
 
-@onready var collider = $Area2D/CollisionPolygon2D
+@onready var area : Area2D = $Area2D
+@onready var collider : CollisionPolygon2D = $Area2D/CollisionPolygon2D
 
 var _polygon_verts : Array
 var _segment_array: Array
@@ -17,7 +18,7 @@ func _ready():
 func _process(delta):
 	pass
 	
-func initialize(edge_dictionary : Dictionary, random_color = true):
+func initialize(edge_dictionary : Dictionary, polygon_color : Color):
 	_edge_dictionary = edge_dictionary
 	var counter = 0
 	_polygon_verts.clear()
@@ -27,16 +28,7 @@ func initialize(edge_dictionary : Dictionary, random_color = true):
 	_segment_array = _edge_dictionary.values()
 	polygon = _edge_dictionary.keys()
 	collider.polygon = polygon
-	if random_color:
-		color = Color(randf(), randf(), randf())
-
-func _on_area_2d_mouse_entered():
-	#print("Mouse entered " + name)
-	pass
-
-func _on_area_2d_mouse_exited():
-	#print("Mouse exited " + name)
-	pass
+	color = polygon_color
 
 func split_across_line(line : LineData) -> Array:
 	var polygon0_verts : Array

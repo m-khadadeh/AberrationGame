@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://6fvcld2htr4g"]
+
+[ext_resource type="Script" path="res://01_Scripts/gutter_polygon.gd" id="1_dr0d8"]
+
+[node name="GutterPolygon" type="Polygon2D"]
+z_index = 1
+color = Color(0, 0, 0, 1)
+script = ExtResource("1_dr0d8")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Area2D"]
+polygon = PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0)

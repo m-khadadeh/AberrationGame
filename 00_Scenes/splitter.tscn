@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bcu7g1xggr0tn" path="res://icon.svg" id="2_64kgg"]
 
 [node name="Splitter" type="Node2D"]
+z_index = 3
 script = ExtResource("1_j11w1")
 height_padding = 50.0
 snap_range = 40.0

@@ -109,6 +109,6 @@ func change_state(state : State):
 			_end_marker_sprite.visible = false
 
 func get_line_data() -> LineData:
-	var line_data = LineData.new(_endpoints[0], (_endpoints[1] - _endpoints[0]).normalized())
+	var line_data = LineData.new(_endpoints[0], (_endpoints[1] - _endpoints[0]).normalized(), _endpoints)
 	
 	return line_data

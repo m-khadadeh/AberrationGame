@@ -1,9 +1,12 @@
 extends Node2D
 
-@onready var polygon_scene = preload(("res://00_Scenes/splittable_polygon.tscn"))
-@onready var splitter_scene = preload("res://00_Scenes/splitter.tscn")
+@onready var _button_scene : PackedScene = preload("res://00_Scenes/splittable_button.tscn")
+@onready var _splitter_scene : PackedScene = preload("res://00_Scenes/splitter.tscn")
 
-var _polygon_array : Array
+@onready var _gutter_parent : GutterManager = $GutterManager
+@onready var _button_parent : Node2D = $ButtonParent
+
+var _button_array : Array
 var _line_array : Array
 var _current_splitter : Splitter
 var _screen_corners : PackedVector2Array
@@ -16,6 +19,8 @@ var current_state : GameState
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_button_array.clear()
+	
 	_screen_corners.append(Vector2(0,0))
 	_screen_corners.append(Vector2(get_viewport_rect().size.x, 0))
 	_screen_corners.append(Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y))
@@ -38,22 +43,23 @@ func _ready():
 	polygon_edge_dictionary[_screen_corners[2]] = starting_polygon_segments[2]
 	polygon_edge_dictionary[_screen_corners[3]] = starting_polygon_segments[3]
 	
-	_polygon_array.append(_create_polygon(polygon_edge_dictionary))
+	_button_array.append(_create_button(polygon_edge_dictionary))
 	
 	recalculate_points_of_intersection()
+	switch_state_to(GameState.SELECTING_BUTTONS)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
-func _create_polygon(edge_dictionary : Dictionary) -> SplittablePolygon:
-	var new_polygon : SplittablePolygon
-	new_polygon = polygon_scene.instantiate()
-	add_child(new_polygon)
+func _create_button(edge_dictionary : Dictionary) -> SplittableButton:
+	var new_button : SplittableButton
+	new_button = _button_scene.instantiate()
+	add_child(new_button)
 	
-	new_polygon.initialize(edge_dictionary)
+	new_button.initialize(edge_dictionary, _gutter_parent)
 	
-	return new_polygon
+	return new_button
 
 func _input(event):
 	match current_state:
@@ -74,26 +80,39 @@ func switch_state_to(new_state : GameState):
 			var line_data = _current_splitter.get_line_data()
 			_line_array.append(line_data)
 			recalculate_points_of_intersection()
-			var polygons_to_append : Array
-			for polygon in _polygon_array:
-				var new_polys = polygon.split_across_line(line_data)
-				if new_polys.size() != 1:
-					(polygon as SplittablePolygon).initialize(new_polys[0], false)
-					var new_poly : SplittablePolygon
-					new_poly = polygon_scene.instantiate()
-					add_child(new_poly)
-					new_poly.initialize(new_polys[1])
-					polygons_to_append.append(new_poly)
-			for polygon in polygons_to_append:
-				_polygon_array.append(polygon)
+			var buttons_to_append : Array
+			for button in _button_array:
+				var new_button_dicts = button.split_across_line(line_data)
+				if new_button_dicts.size() != 1:
+					button.initialize(new_button_dicts[0], _gutter_parent, false)
+					var new_button : SplittableButton
+					new_button = _button_scene.instantiate()
+					_button_parent.add_child(new_button)
+					new_button.initialize(new_button_dicts[1], _gutter_parent)
+					buttons_to_append.append(new_button)
+			for button in buttons_to_append:
+				_button_array.append(button)
+			
+			var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
+			var gutter_points : PackedVector2Array
+			gutter_points.append(line_data.drawing_endpoints[0] + scaled_normal_vector)
+			gutter_points.append(line_data.drawing_endpoints[0] - scaled_normal_vector)
+			gutter_points.append(line_data.drawing_endpoints[1] - scaled_normal_vector)
+			gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
+			_gutter_parent.add_gutter(gutter_points)
+			
 			_current_splitter.queue_free()
 			
 	# State enter logic
 	match new_state:
 		GameState.SELECTING_BUTTONS:
+			for button in _button_array:
+				button.on_enter_button_selection_game_state()
 			pass
 		GameState.SLICING:
-			var new_splitter = splitter_scene.instantiate()
+			for button in _button_array:
+				button.on_exit_button_selection_game_state()
+			var new_splitter = _splitter_scene.instantiate()
 			add_child(new_splitter)
 			new_splitter.initialize(_points_of_intersection)
 			_current_splitter = new_splitter

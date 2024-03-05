@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://lmvuxd3sugcn"]
+
+[ext_resource type="Script" path="res://01_Scripts/gutter_manager.gd" id="1_yt231"]
+
+[node name="GutterManager" type="Node2D"]
+script = ExtResource("1_yt231")

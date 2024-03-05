@@ -3,11 +3,15 @@ class_name LineData
 var direction_vector : Vector2
 var single_point: Vector2
 
+var drawing_endpoints : Array
+
 enum PointRelationship {LEFT, RIGHT}
 
-func _init(_point : Vector2, _direction : Vector2):
+func _init(_point : Vector2, _direction : Vector2, endpoints = null):
 	direction_vector = _direction.normalized()
 	single_point = _point
+	if endpoints != null:
+		drawing_endpoints = endpoints
 
 func get_point_at_parameter(t : float) -> Vector2:
 	return single_point + (t * direction_vector)
