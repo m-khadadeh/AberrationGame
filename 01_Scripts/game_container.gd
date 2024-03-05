@@ -141,7 +141,6 @@ func recalculate_points_of_intersection():
 				var point_of_intersection = line.get_intersecton_with_line(other_line)
 				if is_onscreen(point_of_intersection) and not _points_of_intersection.has(point_of_intersection):
 					_points_of_intersection.append(point_of_intersection)
-				
 
 func is_onscreen(point : Vector2) -> bool:
 	return point.x >= _screen_corners[0].x and \

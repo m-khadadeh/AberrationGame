@@ -36,7 +36,7 @@ func split_across_line(line : LineData) -> Array:
 			# line coincides wth segment within tolerance
 			return []
 		
-		var point_of_intersect = _segment_array[segment_index].get_intersection(line)
+		var point_of_intersect = _segment_array[segment_index].get_intersection(line, error_tolerance)
 		if point_of_intersect.x != INF:
 			var point_exists = false
 			for point in split_points_set:
@@ -61,6 +61,10 @@ func split_across_line(line : LineData) -> Array:
 				split_points_set.append(_polygon_verts[similar_point])
 	
 	if split_points.size() < 2:
+		var pois : String = "Missed " + get_parent().name + ". touched "
+		for point in split_points_set:
+			pois += str(point.point)
+		print(pois)
 		# less than 2 intersection points on polygon
 		return [_edge_dictionary]
 		

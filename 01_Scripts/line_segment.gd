@@ -13,12 +13,12 @@ func _init(line : LineData, extents: Array):
 func get_intersection_parameter(line : LineData) -> float:
 	return _line.get_intersection_parameter(line)
 
-func get_intersection(line : LineData) -> Vector2:
+func get_intersection(line : LineData, error_tolerance : float) -> Vector2:
 	var intersection_parameter = get_intersection_parameter(line)
-	if (intersection_parameter >= _parameter_extents[0] and \
-	intersection_parameter <= _parameter_extents[1]) or \
-	(intersection_parameter >= _parameter_extents[1] and \
-	intersection_parameter <= _parameter_extents[0]):
+	if (intersection_parameter >= _parameter_extents[0] - error_tolerance and \
+	intersection_parameter <= _parameter_extents[1] + error_tolerance) or \
+	(intersection_parameter >= _parameter_extents[1] - error_tolerance and \
+	intersection_parameter <= _parameter_extents[0] + error_tolerance):
 		return _line.get_point_at_parameter(intersection_parameter)
 	else:
 		return Vector2(INF, INF)

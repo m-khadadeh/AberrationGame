@@ -60,6 +60,7 @@ func show_button_hover_effects(show : bool):
 	#Button hover effects here
 	if show:
 		polygon.color = hover_color
+		print("Hovering" + name)
 	else:
 		polygon.color = regular_color
 	pass
