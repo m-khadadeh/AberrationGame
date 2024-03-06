@@ -1,0 +1,6 @@
+[gd_resource type="Resource" script_class="SplitOnClickLogic" load_steps=2 format=3 uid="uid://dm5dh4q32fdq6"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/split_on_click_logic.gd" id="1_w3bby"]
+
+[resource]
+script = ExtResource("1_w3bby")

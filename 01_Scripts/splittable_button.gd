@@ -6,6 +6,7 @@ extends Node2D
 @export var hover_color: Color
 
 @onready var polygon : SplittablePolygon = $SplittablePolygon
+@onready var _control_parent : Control = $Control
 
 @onready var _mouse_on_button : bool = false
 @onready var _mouse_on_gutters : bool = false
@@ -14,16 +15,50 @@ extends Node2D
 enum State {NORMAL, HOVERED, HELD, HELD_UNHOVERED, LOCKED}
 @onready var state : State = State.NORMAL
 
+var _logic : ButtonLogic
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	polygon.area.mouse_entered.connect(on_mouse_enter_button)
 	polygon.area.mouse_exited.connect(on_mouse_exit_button)
 
-func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, reset = true):
+func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):
 	polygon.initialize(edge_dictionary, regular_color, error_tolerance)
+	
+	var centroid = Vector2(0,0)
+	for point in edge_dictionary.keys():
+		centroid += point
+	centroid /= edge_dictionary.keys().size()
+	_control_parent.set_position(centroid)
+	
+	_logic = logic
+	_logic.on_ready(_control_parent, null)
+	
 	if reset:
 		gutter_manager.gutters_entered.connect(on_gutters_hovered)
 		gutter_manager.gutters_exited.connect(on_gutters_unhovered)
+
+func _unhandled_input(event):
+	match state:
+		State.NORMAL:
+			pass
+		State.HOVERED:
+			if event.is_action_pressed("left_click") and not event.is_echo():
+				get_viewport().set_input_as_handled()
+				print("Starting Split")
+				_logic.on_button_clicked(null, null)
+				switch_state(State.HELD)
+		State.HELD:
+			if event.is_action_released("left_click"):
+				if hover_check():
+					switch_state(State.HOVERED)
+				else: 
+					switch_state(State.NORMAL)
+		State.HELD_UNHOVERED:
+			if event.is_action_released("left_click"):
+				switch_state(State.NORMAL)
+		State.LOCKED:
+			pass
 
 func split_across_line(line : LineData) -> Array:
 	return polygon.split_across_line(line)
@@ -52,10 +87,6 @@ func on_exit_button_selection_game_state():
 	_can_select_buttons = false
 	hover_check()
 
-func run_button_logic():
-	# Button logic here
-	pass
-
 func show_button_hover_effects(show : bool):
 	#Button hover effects here
 	if show:
@@ -71,9 +102,6 @@ func switch_state(new_state : State):
 		State.NORMAL:
 			pass
 		State.HOVERED:
-			if new_state == State.HELD:
-				# button has been clicked under proper conditions
-				run_button_logic()
 			if new_state != State.HOVERED:
 				show_button_hover_effects(false)
 		State.HELD:

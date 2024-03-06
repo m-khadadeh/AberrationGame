@@ -59,15 +59,11 @@ func split_across_line(line : LineData) -> Array:
 			else:
 				split_points[similar_point] = _polygon_verts[similar_point]
 				split_points_set.append(_polygon_verts[similar_point])
-	
+				
 	if split_points.size() < 2:
-		#var pois : String = "Missed " + get_parent().name + ". touched "
-		#for point in split_points_set:
-			#pois += str(point.point)
-		#print(pois)
 		# less than 2 intersection points on polygon
 		return [_edge_dictionary]
-		
+
 	var side = false # false is polygon0. true is polygon1
 	for i in range(_polygon_verts.size()):
 		var vert = (_polygon_verts[i] as PolygonVertexData)

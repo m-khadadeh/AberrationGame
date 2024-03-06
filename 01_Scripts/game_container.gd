@@ -1,3 +1,4 @@
+class_name GameContainer
 extends Node2D
 
 @onready var _button_scene : PackedScene = preload("res://00_Scenes/splittable_button.tscn")
@@ -17,7 +18,8 @@ enum GameState {SELECTING_BUTTONS, SLICING}
 var current_state : GameState
 @export var start_state : GameState
 @export var split_padding : float
-@export var error_tolerance: float
+@export var error_tolerance : float
+@export var button_logic_types : Array
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -45,7 +47,10 @@ func _ready():
 	polygon_edge_dictionary[_screen_corners[2]] = starting_polygon_segments[2]
 	polygon_edge_dictionary[_screen_corners[3]] = starting_polygon_segments[3]
 	
-	_button_array.append(_create_button(polygon_edge_dictionary))
+	for button_type in button_logic_types:
+		button_type.game_container = self
+	
+	_button_array.append(_create_button(polygon_edge_dictionary, button_logic_types[0]))
 	
 	recalculate_points_of_intersection()
 	recreate_graph()
@@ -56,36 +61,41 @@ func _ready():
 func _process(delta):
 	pass
 
-func _create_button(edge_dictionary : Dictionary) -> SplittableButton:
+func _create_button(edge_dictionary : Dictionary, logic : ButtonLogic) -> SplittableButton:
 	var new_button : SplittableButton
 	new_button = _button_scene.instantiate()
 	_button_parent.add_child(new_button)
 	
-	new_button.initialize(edge_dictionary, _gutter_parent, error_tolerance)
+	new_button.initialize(edge_dictionary, _gutter_parent, error_tolerance, logic)
 	
 	return new_button
 
-func _input(event):
+func _unhandled_input(event):
 	match current_state:
-		GameState.SELECTING_BUTTONS:
-			if event.is_action_pressed("right_click"):
-				switch_state_to(GameState.SLICING)
 		GameState.SLICING:
-			if event.is_action_pressed("left_click"):
-				if _current_splitter.advance_on_click():
-					if do_split():
-						recreate_graph()
-						switch_state_to(GameState.SELECTING_BUTTONS)
-					else:
-						print("Split failed. Try again")
-						switch_state_to(GameState.SLICING)
+			if not event.is_echo():
+				if event.is_action_pressed("left_click"):
+					print("Advancing split")
+					if _current_splitter.advance_on_click():
+						if do_split():
+							recreate_graph()
+							switch_state_to(GameState.SELECTING_BUTTONS)
+						else:
+							print("Split failed. Try again")
+							switch_state_to(GameState.SLICING)
+
+func start_splitting():
+	if current_state == GameState.SELECTING_BUTTONS:
+		switch_state_to(GameState.SLICING)
 
 func do_split() -> bool:
 	var line_data = _current_splitter.get_line_data()
 	_line_array.append(line_data)
 	recalculate_points_of_intersection()
 	var buttons_to_append : Array
+	var new_button_new_logic: Array
 	var buttons_to_split : Dictionary
+	var old_button_new_logic : Dictionary
 	var safe_to_continue = true
 	for i in range(_button_array.size()):
 		var new_button_dicts = _button_array[i].split_across_line(line_data)
@@ -96,7 +106,9 @@ func do_split() -> bool:
 		elif new_button_dicts.size() > 1:
 			# We are safe
 			buttons_to_split[i] = new_button_dicts[0]
+			old_button_new_logic[i] = _button_array[i]._logic.split_button_logic_replace
 			buttons_to_append.append(new_button_dicts[1])
+			new_button_new_logic.append(_button_array[i]._logic.split_button_logic_next)
 	_current_splitter.queue_free()
 	
 	if buttons_to_split.size() == 0:
@@ -105,9 +117,9 @@ func do_split() -> bool:
 	
 	if safe_to_continue:
 		for button in buttons_to_split:
-			_button_array[button].initialize(buttons_to_split[button], _gutter_parent, error_tolerance, false)
-		for button in buttons_to_append:
-			_button_array.append(_create_button(button))
+			_button_array[button].initialize(buttons_to_split[button], _gutter_parent, error_tolerance, old_button_new_logic[button], false)
+		for i in range(buttons_to_append.size()):
+			_button_array.append(_create_button(buttons_to_append[i], new_button_new_logic[i]))
 			
 		var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
 		var gutter_points : PackedVector2Array

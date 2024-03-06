@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://hk1b21854g0g"]
+[gd_scene load_steps=4 format=3 uid="uid://hk1b21854g0g"]
 
 [ext_resource type="Script" path="res://01_Scripts/game_container.gd" id="1_dmtw6"]
+[ext_resource type="Resource" uid="uid://dm5dh4q32fdq6" path="res://03_Resources/ButtonLogic/split_on_click_logic.tres" id="2_3s6fy"]
 [ext_resource type="PackedScene" uid="uid://lmvuxd3sugcn" path="res://00_Scenes/gutter_manager.tscn" id="2_x50wr"]
 
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
 split_padding = 10.0
 error_tolerance = 0.1
+button_logic_types = [ExtResource("2_3s6fy")]
 
 [node name="GutterManager" parent="." instance=ExtResource("2_x50wr")]
 

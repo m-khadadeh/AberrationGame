@@ -1,11 +1,26 @@
-[gd_scene load_steps=3 format=3 uid="uid://8fgnngbkp6og"]
+[gd_scene load_steps=4 format=3 uid="uid://8fgnngbkp6og"]
 
 [ext_resource type="Script" path="res://01_Scripts/splittable_button.gd" id="1_00cop"]
 [ext_resource type="PackedScene" uid="uid://bi2tij4ucel8j" path="res://00_Scenes/splittable_polygon.tscn" id="1_4nu50"]
 
+[sub_resource type="Theme" id="Theme_lef61"]
+RichTextLabel/font_sizes/normal_font_size = 32
+
 [node name="SplittableButton" type="Node2D"]
 script = ExtResource("1_00cop")
 regular_color = Color(0.533333, 0.533333, 0.533333, 1)
-hover_color = Color(0.882353, 0.882353, 0.882353, 1)
+hover_color = Color(0.705882, 0.623529, 0.552941, 1)
 
 [node name="SplittablePolygon" parent="." instance=ExtResource("1_4nu50")]
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 351.0
+offset_bottom = 50.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+layout_mode = 0
+offset_right = 351.0
+offset_bottom = 50.0
+theme = SubResource("Theme_lef61")
