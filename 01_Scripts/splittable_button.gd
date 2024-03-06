@@ -19,8 +19,8 @@ func _ready():
 	polygon.area.mouse_entered.connect(on_mouse_enter_button)
 	polygon.area.mouse_exited.connect(on_mouse_exit_button)
 
-func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, reset = true):
-	polygon.initialize(edge_dictionary, regular_color)
+func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, reset = true):
+	polygon.initialize(edge_dictionary, regular_color, error_tolerance)
 	if reset:
 		gutter_manager.gutters_entered.connect(on_gutters_hovered)
 		gutter_manager.gutters_exited.connect(on_gutters_unhovered)
@@ -60,7 +60,7 @@ func show_button_hover_effects(show : bool):
 	#Button hover effects here
 	if show:
 		polygon.color = hover_color
-		print("Hovering" + name)
+		# print("Hovering" + name)
 	else:
 		polygon.color = regular_color
 	pass
@@ -117,3 +117,6 @@ func hover_check():
 				switch_state(State.NORMAL)
 			elif _mouse_on_button and not _mouse_on_gutters:
 				switch_state(State.HELD)
+
+func get_edges() -> Array:
+	return polygon._edge_dictionary.values()

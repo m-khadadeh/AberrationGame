@@ -41,5 +41,7 @@ func contains_point(point : Vector2, tolerance : float) -> bool:
 	return similar_within_tolerance(x_param, y_param, tolerance)
 
 func is_parallel(line : LineData, tolerance : float) -> bool:
-	return similar_within_tolerance(direction_vector.x, line.direction_vector.x, tolerance) and \
-	similar_within_tolerance(direction_vector.y, line.direction_vector.y, tolerance)
+	return (similar_within_tolerance(direction_vector.x, line.direction_vector.x, tolerance) and \
+	similar_within_tolerance(direction_vector.y, line.direction_vector.y, tolerance)) or \
+	(similar_within_tolerance(-direction_vector.x, line.direction_vector.x, tolerance) and \
+	similar_within_tolerance(-direction_vector.y, line.direction_vector.y, tolerance))

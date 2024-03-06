@@ -6,6 +6,7 @@
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
 split_padding = 10.0
+error_tolerance = 0.1
 
 [node name="GutterManager" parent="." instance=ExtResource("2_x50wr")]
 

@@ -11,11 +11,13 @@ var _line_array : Array
 var _current_splitter : Splitter
 var _screen_corners : PackedVector2Array
 var _points_of_intersection : PackedVector2Array
+var _button_graph : Dictionary
 
 enum GameState {SELECTING_BUTTONS, SLICING}
 var current_state : GameState
 @export var start_state : GameState
 @export var split_padding : float
+@export var error_tolerance: float
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -46,6 +48,8 @@ func _ready():
 	_button_array.append(_create_button(polygon_edge_dictionary))
 	
 	recalculate_points_of_intersection()
+	recreate_graph()
+	
 	switch_state_to(GameState.SELECTING_BUTTONS)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -57,7 +61,7 @@ func _create_button(edge_dictionary : Dictionary) -> SplittableButton:
 	new_button = _button_scene.instantiate()
 	_button_parent.add_child(new_button)
 	
-	new_button.initialize(edge_dictionary, _gutter_parent)
+	new_button.initialize(edge_dictionary, _gutter_parent, error_tolerance)
 	
 	return new_button
 
@@ -70,6 +74,7 @@ func _input(event):
 			if event.is_action_pressed("left_click"):
 				if _current_splitter.advance_on_click():
 					if do_split():
+						recreate_graph()
 						switch_state_to(GameState.SELECTING_BUTTONS)
 					else:
 						print("Split failed. Try again")
@@ -93,9 +98,14 @@ func do_split() -> bool:
 			buttons_to_split[i] = new_button_dicts[0]
 			buttons_to_append.append(new_button_dicts[1])
 	_current_splitter.queue_free()
+	
+	if buttons_to_split.size() == 0:
+		# line didn't split thru anything
+		safe_to_continue = false
+	
 	if safe_to_continue:
 		for button in buttons_to_split:
-			_button_array[button].initialize(buttons_to_split[button], _gutter_parent, false)
+			_button_array[button].initialize(buttons_to_split[button], _gutter_parent, error_tolerance, false)
 		for button in buttons_to_append:
 			_button_array.append(_create_button(button))
 			
@@ -107,6 +117,23 @@ func do_split() -> bool:
 		gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
 		_gutter_parent.add_gutter(gutter_points)
 		return true
+	return false
+
+func recreate_graph():
+	_button_graph.clear()
+	for button in _button_array:
+		_button_graph[button] = []
+		for other_button in _button_array:
+			if buttons_are_neighbors(button, other_button):
+				_button_graph[button].append(other_button)
+				
+
+func buttons_are_neighbors(button0 : SplittableButton, button1 : SplittableButton) -> bool:
+	if button0 != button1:
+		for edge in button0.get_edges():
+			for other_edge in button1.get_edges():
+				if edge.does_coincide_with(other_edge, error_tolerance):
+					return true
 	return false
 
 func switch_state_to(new_state : GameState):
