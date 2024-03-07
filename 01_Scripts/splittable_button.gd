@@ -6,7 +6,7 @@ extends Node2D
 @export var hover_color: Color
 
 @onready var polygon : SplittablePolygon = $SplittablePolygon
-@onready var _control_parent : Control = $Control
+@onready var _control_parent : Control = $SplittablePolygon/Control
 
 @onready var _mouse_on_button : bool = false
 @onready var _mouse_on_gutters : bool = false
@@ -25,11 +25,29 @@ func _ready():
 func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):
 	polygon.initialize(edge_dictionary, regular_color, error_tolerance)
 	
+	var points : Array = edge_dictionary.keys()
+	
 	var centroid = Vector2(0,0)
-	for point in edge_dictionary.keys():
+	var min_x = points[0].x
+	var max_x = points[0].x
+	var min_y = points[0].y
+	var max_y = points[0].y
+	for point in points:
 		centroid += point
+		if point.x < min_x:
+			min_x = point.x
+		elif point.x > max_x:
+			max_x = point.x
+		if point.y < min_y:
+			min_y = point.y
+		elif point.y > max_y:
+			max_y = point.y
+	
 	centroid /= edge_dictionary.keys().size()
-	_control_parent.set_position(centroid)
+	var size = Vector2(max_x - min_x, max_y - min_y)
+	
+	_control_parent.set_size(size)
+	_control_parent.set_position(centroid - (size / 2))
 	
 	_logic = logic
 	_logic.on_ready(_control_parent, null)
