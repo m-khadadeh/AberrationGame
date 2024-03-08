@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="QuitButtonLogic" load_steps=2 format=3 uid="uid://b8kalgc1kr6vy"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/quit_button_logic.gd" id="1_4khm4"]
+
+[resource]
+script = ExtResource("1_4khm4")
+color = Color(0.129412, 0.145098, 0.560784, 1)

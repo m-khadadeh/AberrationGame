@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="SettingsButtonLogic" load_steps=2 format=3 uid="uid://4bd3gefdkf5e"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/settings_button_logic.gd" id="1_sbopu"]
+
+[resource]
+script = ExtResource("1_sbopu")
+color = Color(0.729412, 0.631373, 0.14902, 1)

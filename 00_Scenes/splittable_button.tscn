@@ -8,11 +8,10 @@ RichTextLabel/font_sizes/normal_font_size = 32
 
 [node name="SplittableButton" type="Node2D"]
 script = ExtResource("1_00cop")
-regular_color = Color(0.533333, 0.533333, 0.533333, 1)
 hover_color = Color(0.705882, 0.623529, 0.552941, 1)
 
 [node name="SplittablePolygon" parent="." instance=ExtResource("1_4nu50")]
-clip_children = 1
+clip_children = 2
 
 [node name="Control" type="Control" parent="SplittablePolygon"]
 layout_mode = 3

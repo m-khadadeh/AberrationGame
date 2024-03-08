@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="CreditsButtonLogic" load_steps=2 format=3 uid="uid://b0yagwjph181a"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/credits_button_logic.gd" id="1_jppnf"]
+
+[resource]
+script = ExtResource("1_jppnf")
+color = Color(0.368627, 0.627451, 0, 1)

@@ -27,7 +27,7 @@ var _state : State
 func _ready():
 	_screen_size = get_viewport_rect().size
 	_state = State.SELECTING_POINT_1
-	_start_marker.position = _screen_size / 2
+	_start_marker.position = get_global_mouse_position()
 	_end_marker.position = get_global_mouse_position()
 	_start_marker_sprite.visible = false
 	_end_marker_sprite.visible = false

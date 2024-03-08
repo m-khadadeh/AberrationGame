@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PlayButtonLogic" load_steps=2 format=3 uid="uid://dmw6nctnccqpv"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/play_button_logic.gd" id="1_obgq5"]
+
+[resource]
+script = ExtResource("1_obgq5")
+color = Color(0.666667, 0, 0, 1)

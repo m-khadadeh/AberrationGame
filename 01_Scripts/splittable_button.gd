@@ -2,11 +2,11 @@ class_name SplittableButton
 
 extends Node2D
 
-@export var regular_color : Color
 @export var hover_color: Color
 
 @onready var polygon : SplittablePolygon = $SplittablePolygon
 @onready var _control_parent : Control = $SplittablePolygon/Control
+@onready var _label : RichTextLabel = $SplittablePolygon/Control/VBoxContainer/RichTextLabel
 
 @onready var _mouse_on_button : bool = false
 @onready var _mouse_on_gutters : bool = false
@@ -22,8 +22,8 @@ func _ready():
 	polygon.area.mouse_entered.connect(on_mouse_enter_button)
 	polygon.area.mouse_exited.connect(on_mouse_exit_button)
 
-func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):
-	polygon.initialize(edge_dictionary, regular_color, error_tolerance)
+func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):	
+	polygon.initialize(edge_dictionary, logic.color, error_tolerance)
 	
 	var points : Array = edge_dictionary.keys()
 	
@@ -49,12 +49,11 @@ func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, er
 	_control_parent.set_size(size)
 	_control_parent.set_position(centroid - (size / 2))
 	
-	_logic = logic
-	_logic.on_ready(_control_parent, null)
-	
 	if reset:
 		gutter_manager.gutters_entered.connect(on_gutters_hovered)
 		gutter_manager.gutters_exited.connect(on_gutters_unhovered)
+	
+	set_button_logic(logic)
 
 func _unhandled_input(event):
 	match state:
@@ -63,14 +62,13 @@ func _unhandled_input(event):
 		State.HOVERED:
 			if event.is_action_pressed("left_click") and not event.is_echo():
 				get_viewport().set_input_as_handled()
-				print("Starting Split")
-				_logic.on_button_clicked(null, null)
+				_logic.on_button_clicked(self)
 				switch_state(State.HELD)
 		State.HELD:
 			if event.is_action_released("left_click"):
-				if hover_check():
+				if _can_select_buttons:
 					switch_state(State.HOVERED)
-				else: 
+				else:
 					switch_state(State.NORMAL)
 		State.HELD_UNHOVERED:
 			if event.is_action_released("left_click"):
@@ -111,7 +109,7 @@ func show_button_hover_effects(show : bool):
 		polygon.color = hover_color
 		# print("Hovering" + name)
 	else:
-		polygon.color = regular_color
+		polygon.color = _logic.color
 	pass
 
 func switch_state(new_state : State):
@@ -166,3 +164,11 @@ func hover_check():
 
 func get_edges() -> Array:
 	return polygon._edge_dictionary.values()
+
+func set_label_text(text : String):
+	_label.text = text
+	
+func set_button_logic(logic : ButtonLogic):
+	_logic = logic
+	_logic.on_ready(self)
+	polygon.color = _logic.color

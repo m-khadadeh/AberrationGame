@@ -13,6 +13,7 @@ var _current_splitter : Splitter
 var _screen_corners : PackedVector2Array
 var _points_of_intersection : PackedVector2Array
 var _button_graph : Dictionary
+var _splitting_queued : bool
 
 enum GameState {SELECTING_BUTTONS, SLICING}
 var current_state : GameState
@@ -59,7 +60,13 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	pass
+	match current_state:
+		GameState.SELECTING_BUTTONS:
+			if _splitting_queued:
+				start_splitting()
+				_splitting_queued = false
+		GameState.SLICING:
+			pass
 
 func _create_button(edge_dictionary : Dictionary, logic : ButtonLogic) -> SplittableButton:
 	var new_button : SplittableButton
@@ -75,7 +82,6 @@ func _unhandled_input(event):
 		GameState.SLICING:
 			if not event.is_echo():
 				if event.is_action_pressed("left_click"):
-					print("Advancing split")
 					if _current_splitter.advance_on_click():
 						if do_split():
 							recreate_graph()
@@ -186,3 +192,11 @@ func is_onscreen(point : Vector2) -> bool:
 	point.x <= _screen_corners[2].x and \
 	point.y >= _screen_corners[0].y and \
 	point.y <= _screen_corners[2].y
+
+func queue_split():
+	_splitting_queued = true
+
+func click_neighbors(clicked_button : SplittableButton):
+	for neighbor in _button_graph[clicked_button]:
+		neighbor._logic.on_neighbor_clicked(neighbor)
+	

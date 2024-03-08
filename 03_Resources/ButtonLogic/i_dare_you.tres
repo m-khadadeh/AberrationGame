@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="IDareYouToStartThisGameLogic" load_steps=4 format=3 uid="uid://c6qbvf1l6xlu4"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/i_dare_you_to_start_this_game_logic.gd" id="1_424xm"]
+[ext_resource type="Resource" uid="uid://4bd3gefdkf5e" path="res://03_Resources/ButtonLogic/settings_button_logic.tres" id="2_uwtbq"]
+[ext_resource type="Resource" uid="uid://dmw6nctnccqpv" path="res://03_Resources/ButtonLogic/play_button_logic.tres" id="3_7wlox"]
+
+[resource]
+script = ExtResource("1_424xm")
+label_text = "I Dare You"
+split_on_ready = true
+split_button_logic_replace = ExtResource("3_7wlox")
+split_button_logic_next = ExtResource("2_uwtbq")
+color = Color(0.133333, 0.262745, 0.341176, 1)

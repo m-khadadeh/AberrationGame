@@ -4,3 +4,4 @@
 
 [resource]
 script = ExtResource("1_w3bby")
+color = Color(0.509804, 0.109804, 0.388235, 1)

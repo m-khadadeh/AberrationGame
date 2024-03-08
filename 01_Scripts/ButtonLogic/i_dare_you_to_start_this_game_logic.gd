@@ -1,15 +1,18 @@
-class_name SplitOnClickLogic
+class_name IDareYouToStartThisGameLogic
 extends ButtonLogic
 
 var _label : RichTextLabel
 
+@export var label_text : String
+@export var split_on_ready : bool
+
 func on_ready(button : SplittableButton):
-	split_button_logic_next = self
-	split_button_logic_replace = self
-	button.set_label_text("[center]Slice[/center]")
+	button.set_label_text("[center]" + label_text + "[/center]")
+	if split_on_ready:
+		game_container.queue_split()
 
 func on_button_clicked(button : SplittableButton):
-	game_container.queue_split()
+	pass
 	
 func on_neighbor_clicked(button : SplittableButton):
 	pass
