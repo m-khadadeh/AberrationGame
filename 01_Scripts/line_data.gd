@@ -45,3 +45,6 @@ func is_parallel(line : LineData, tolerance : float) -> bool:
 	similar_within_tolerance(direction_vector.y, line.direction_vector.y, tolerance)) or \
 	(similar_within_tolerance(-direction_vector.x, line.direction_vector.x, tolerance) and \
 	similar_within_tolerance(-direction_vector.y, line.direction_vector.y, tolerance))
+
+func get_perpendicular_direction() -> Vector2:
+	return Vector2(direction_vector.y, -direction_vector.x)

@@ -127,13 +127,13 @@ func do_split() -> bool:
 		for i in range(buttons_to_append.size()):
 			_button_array.append(_create_button(buttons_to_append[i], new_button_new_logic[i]))
 			
-		var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
-		var gutter_points : PackedVector2Array
-		gutter_points.append(line_data.drawing_endpoints[0] + scaled_normal_vector)
-		gutter_points.append(line_data.drawing_endpoints[0] - scaled_normal_vector)
-		gutter_points.append(line_data.drawing_endpoints[1] - scaled_normal_vector)
-		gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
-		_gutter_parent.add_gutter(gutter_points)
+		#var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
+		#var gutter_points : PackedVector2Array
+		#gutter_points.append(line_data.drawing_endpoints[0] + scaled_normal_vector)
+		#gutter_points.append(line_data.drawing_endpoints[0] - scaled_normal_vector)
+		#gutter_points.append(line_data.drawing_endpoints[1] - scaled_normal_vector)
+		#gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
+		#_gutter_parent.add_gutter(gutter_points)
 		return true
 	return false
 

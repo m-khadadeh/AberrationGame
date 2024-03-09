@@ -1,16 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://bi2tij4ucel8j"]
+[gd_scene load_steps=5 format=3 uid="uid://bi2tij4ucel8j"]
 
 [ext_resource type="Material" uid="uid://bk0in30xsfgkj" path="res://05_Materials/button_shader_material.tres" id="1_au1ps"]
 [ext_resource type="Script" path="res://01_Scripts/splittable_polygon.gd" id="1_x1nu3"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ihhv7"]
-width = 128
-height = 128
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_1vg2j"]
+noise_type = 2
+seed = 165
+frequency = 0.0177
+offset = Vector3(1.15, 0, 0)
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sxhom"]
+seamless = true
+seamless_blend_skirt = 0.354
+noise = SubResource("FastNoiseLite_1vg2j")
 
 [node name="SplittablePolygon" type="Polygon2D"]
 material = ExtResource("1_au1ps")
-texture = SubResource("NoiseTexture2D_ihhv7")
+texture = SubResource("NoiseTexture2D_sxhom")
 script = ExtResource("1_x1nu3")
+stroke_width = 20.0
 
 [node name="Area2D" type="Area2D" parent="."]
 

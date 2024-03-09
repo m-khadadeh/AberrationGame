@@ -1,24 +1,26 @@
 shader_type canvas_item;
 
-uniform vec2 texture_scale;
 uniform vec3 polygon_color;
-uniform float edge;
-uniform float exponent;
-
-varying vec2 scaled_uv;
+uniform float edge_min;
 
 void vertex() {
-	scaled_uv = UV * texture_scale;
 	// Called for every vertex the material is visible on.
 }
 
 void fragment() {
-	COLOR.rgb = vec3(pow(scaled_uv.r, exponent));
-	// float uv_g = abs(scaled_uv.g);
-	// float mask = max(step(edge, pow(scaled_uv.r, exponent)), uv_g);
-	// COLOR.rgb = vec3(mask) * polygon_color;
-	
-	//COLOR.rgb = vec3(scaled_uv.r) * polygon_color;
+	vec2 tex_size = vec2(textureSize(TEXTURE, 0));
+	vec2 scaled_uv = UV * tex_size;
+	//COLOR.rgb = vec3(float(on_the_edge(UV, POINT_COORD) < stroke_width ? 1 : 0));
+	vec4 splashes = texture(TEXTURE, scaled_uv);
+	if(scaled_uv.r > 0.9) {
+		float slashed = step(splashes.r, clamp(scaled_uv.g, 0.0, 1.0));
+		COLOR.rgb = polygon_color * slashed;
+		COLOR *= splashes;
+	}
+	else {
+		float mask = step(0.98, 1.0 - scaled_uv.g) * pow(scaled_uv.r, 2);
+		COLOR.rgb = clamp(polygon_color + step(0.4, pow(scaled_uv.g, 3)) + pow(scaled_uv.g, 3) + mask, 0, 1);
+	}
 }
 
 //void light() {

@@ -43,7 +43,7 @@ func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, er
 	
 	centroid /= edge_dictionary.keys().size()
 	
-	polygon.initialize(edge_dictionary, logic.color, error_tolerance, Vector2(min_x, min_y), Vector2(max_x, max_y), centroid)
+	polygon.initialize(edge_dictionary, logic.color, error_tolerance, centroid)
 	var size = Vector2(max_x - min_x, max_y - min_y)
 	
 	_control_parent.set_size(size)
