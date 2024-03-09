@@ -9,18 +9,33 @@ var _segment_array: Array
 var _edge_dictionary : Dictionary
 var _error_tolerance : float
 	
-func initialize(edge_dictionary : Dictionary, polygon_color : Color, tolerance : float):
+func initialize(edge_dictionary : Dictionary, polygon_color : Color, tolerance : float, min_bound : Vector2, max_bound : Vector2, center : Vector2):
 	_edge_dictionary = edge_dictionary
-	var counter = 0
 	_polygon_verts.clear()
-	for vertex in edge_dictionary.keys():
-		_polygon_verts.append(PolygonVertexData.new(counter, vertex, true))
-		counter += 1
+	var vertex_array = _edge_dictionary.keys()
+	var new_polygon_points : PackedVector2Array
+	var new_UV : PackedVector2Array
+	var new_polygon_indices : Array
+	for i in range(vertex_array.size()):
+		_polygon_verts.append(PolygonVertexData.new(i, vertex_array[i], true))
+		new_polygon_points.append(center)
+		new_polygon_points.append(vertex_array[i])
+		new_polygon_points.append(vertex_array[(i + 1) % vertex_array.size()])
+		new_UV.append(Vector2(1.0,0.0))
+		new_UV.append(Vector2(0.0,0.0))
+		new_UV.append(Vector2(0.0,1.0))
+		new_polygon_indices.append([3 * i, 3 * i + 1, 3 * i + 2])
+	polygon = new_polygon_points
+	uv = new_UV
+	polygons = new_polygon_indices
+	material.set_shader_parameter("texture_scale", texture.get_size())
 	_segment_array = _edge_dictionary.values()
 	_error_tolerance = tolerance
-	polygon = _edge_dictionary.keys()
-	collider.polygon = polygon
-	color = polygon_color
+	collider.polygon = vertex_array
+	set_polygon_color(polygon_color)
+
+func set_polygon_color(new_color : Color):
+	material.set_shader_parameter("polygon_color", new_color)
 
 func split_across_line(line : LineData) -> Array:
 	var polygon0_verts : Array

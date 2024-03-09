@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bk0in30xsfgkj"]
+
+[ext_resource type="Shader" path="res://04_Shaders/splittable_button.gdshader" id="1_ev7rf"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_ev7rf")
+shader_parameter/texture_scale = Vector2(1, 1)
+shader_parameter/polygon_color = Vector3(1, 1, 1)
+shader_parameter/edge = 0.2
+shader_parameter/exponent = 1.0

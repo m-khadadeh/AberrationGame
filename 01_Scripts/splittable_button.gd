@@ -23,8 +23,6 @@ func _ready():
 	polygon.area.mouse_exited.connect(on_mouse_exit_button)
 
 func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):	
-	polygon.initialize(edge_dictionary, logic.color, error_tolerance)
-	
 	var points : Array = edge_dictionary.keys()
 	
 	var centroid = Vector2(0,0)
@@ -44,6 +42,8 @@ func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, er
 			max_y = point.y
 	
 	centroid /= edge_dictionary.keys().size()
+	
+	polygon.initialize(edge_dictionary, logic.color, error_tolerance, Vector2(min_x, min_y), Vector2(max_x, max_y), centroid)
 	var size = Vector2(max_x - min_x, max_y - min_y)
 	
 	_control_parent.set_size(size)
@@ -106,10 +106,12 @@ func on_exit_button_selection_game_state():
 func show_button_hover_effects(show : bool):
 	#Button hover effects here
 	if show:
-		polygon.color = hover_color
+		polygon.set_polygon_color(hover_color)
 		# print("Hovering" + name)
+		pass
 	else:
-		polygon.color = _logic.color
+		polygon.set_polygon_color(_logic.color)
+		pass
 	pass
 
 func switch_state(new_state : State):
@@ -171,4 +173,4 @@ func set_label_text(text : String):
 func set_button_logic(logic : ButtonLogic):
 	_logic = logic
 	_logic.on_ready(self)
-	polygon.color = _logic.color
+	polygon.set_polygon_color(_logic.color)
