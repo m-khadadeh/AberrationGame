@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://1q5qduy712sh"]
+[gd_scene load_steps=5 format=3 uid="uid://1q5qduy712sh"]
 
 [ext_resource type="Script" path="res://01_Scripts/splittable_button.gd" id="1_6hocm"]
 [ext_resource type="PackedScene" uid="uid://bi2tij4ucel8j" path="res://00_Scenes/splittable_polygon.tscn" id="2_6yksf"]
-[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="3_dnfbv"]
 [ext_resource type="Shader" path="res://04_Shaders/splittable_button.gdshader" id="3_yftbk"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eb677"]
@@ -14,6 +13,9 @@ shader_parameter/edge_min = null
 [node name="SplittableButton" type="Node2D"]
 script = ExtResource("1_6hocm")
 hover_color = Color(0.7, 0.6, 0.55, 1)
+lock_hover_color = Color(0.580392, 0.580392, 0.580392, 1)
+lock_color = Color(0.211765, 0.211765, 0.211765, 1)
+held_color = Color(1, 1, 1, 1)
 
 [node name="SplittablePolygon" parent="." instance=ExtResource("2_6yksf")]
 clip_children = 2
@@ -33,11 +35,3 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="RichTextLabel" type="RichTextLabel" parent="SplittablePolygon/Control/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 6
-mouse_filter = 2
-theme = ExtResource("3_dnfbv")
-bbcode_enabled = true
-fit_content = true

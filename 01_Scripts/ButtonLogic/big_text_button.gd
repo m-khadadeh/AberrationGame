@@ -1,10 +1,9 @@
-class_name PlayButtonLogic
+class_name BigTextButtonLogic
 extends ButtonLogic
 
+@export var label_text : String
+
 func on_ready(button : SplittableButton):
-	next_button_logic = load("res://03_Resources/ButtonLogic/did_you_think_that_would_work.tres")
-	split_button_logic_next = self
-	split_button_logic_replace = self
 	button.clear_control_tree()
 	button.add_tree_to_control(create_control_tree())
 
@@ -15,7 +14,7 @@ func on_neighbor_clicked(button : SplittableButton):
 	super(button)
 
 func on_applied(button : SplittableButton):
-	print("You win!")
+	pass
 
 func on_hovered(button : SplittableButton):
 	pass
@@ -26,6 +25,6 @@ func create_control_tree() -> Node:
 	new_node.fit_content = true
 	new_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	new_node.theme = preload("res://06_Themes/game_theme.tres")
-	new_node.text = "[center]Play[/center]"
+	new_node.text = "[center]" + label_text + "[/center]"
 	new_node.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 	return new_node

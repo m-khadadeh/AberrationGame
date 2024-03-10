@@ -13,9 +13,12 @@ var _current_splitter : Splitter
 var _screen_corners : PackedVector2Array
 var _points_of_intersection : PackedVector2Array
 var _button_graph : Dictionary
-var _splitting_queued : bool
 
-enum GameState {SELECTING_BUTTONS, SLICING}
+var _splitting_queued : bool
+var _locking_queued : bool
+var _applying_queued : bool
+
+enum GameState {SELECTING_BUTTONS, SLICING, LOCKING}
 var current_state : GameState
 @export var start_state : GameState
 @export var split_padding : float
@@ -63,8 +66,21 @@ func _process(delta):
 	match current_state:
 		GameState.SELECTING_BUTTONS:
 			if _splitting_queued:
-				start_splitting()
+				switch_state_to(GameState.SLICING)
 				_splitting_queued = false
+			elif _locking_queued:
+				switch_state_to(GameState.LOCKING)
+				_locking_queued = false
+			elif _applying_queued:
+				var checking_type : ButtonLogic = _button_array[0]._logic
+				var all_same = true
+				for button in _button_array:
+					if button._logic != checking_type:
+						all_same = false
+						break
+				if all_same:
+					checking_type.on_applied(_button_array[0])
+				_applying_queued = false
 		GameState.SLICING:
 			pass
 
@@ -74,7 +90,7 @@ func _create_button(edge_dictionary : Dictionary, logic : ButtonLogic) -> Splitt
 	_button_parent.add_child(new_button)
 	
 	new_button.initialize(edge_dictionary, _gutter_parent, error_tolerance, logic)
-	
+	new_button.lock_toggled.connect(on_button_lock_toggled)
 	return new_button
 
 func _unhandled_input(event):
@@ -90,9 +106,8 @@ func _unhandled_input(event):
 							print("Split failed. Try again")
 							switch_state_to(GameState.SLICING)
 
-func start_splitting():
-	if current_state == GameState.SELECTING_BUTTONS:
-		switch_state_to(GameState.SLICING)
+func on_button_lock_toggled():
+	switch_state_to(GameState.SELECTING_BUTTONS)
 
 func do_split() -> bool:
 	var line_data = _current_splitter.get_line_data()
@@ -158,10 +173,15 @@ func switch_state_to(new_state : GameState):
 	# State exit logic
 	match current_state:
 		GameState.SELECTING_BUTTONS:
+			for button in _button_array:
+				button.on_exit_button_selection_game_state()
 			pass
 		GameState.SLICING:
 			pass
-			
+		GameState.LOCKING:
+			for button in _button_array:
+				button.on_exit_locking_game_state()
+
 	# State enter logic
 	match new_state:
 		GameState.SELECTING_BUTTONS:
@@ -169,12 +189,13 @@ func switch_state_to(new_state : GameState):
 				button.on_enter_button_selection_game_state()
 			pass
 		GameState.SLICING:
-			for button in _button_array:
-				button.on_exit_button_selection_game_state()
 			var new_splitter = _splitter_scene.instantiate()
 			add_child(new_splitter)
 			new_splitter.initialize(_points_of_intersection)
 			_current_splitter = new_splitter
+		GameState.LOCKING:
+			for button in _button_array:
+				button.on_enter_locking_game_state()
 			
 	current_state = new_state
 
@@ -196,7 +217,12 @@ func is_onscreen(point : Vector2) -> bool:
 func queue_split():
 	_splitting_queued = true
 
+func queue_lock():
+	_locking_queued = true
+
 func click_neighbors(clicked_button : SplittableButton):
 	for neighbor in _button_graph[clicked_button]:
 		neighbor._logic.on_neighbor_clicked(neighbor)
 	
+func queue_apply():
+	_applying_queued = true

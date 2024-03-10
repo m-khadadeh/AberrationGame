@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://hk1b21854g0g"]
+[gd_scene load_steps=13 format=3 uid="uid://hk1b21854g0g"]
 
 [ext_resource type="Script" path="res://01_Scripts/game_container.gd" id="1_dmtw6"]
 [ext_resource type="Resource" uid="uid://dm5dh4q32fdq6" path="res://03_Resources/ButtonLogic/split_on_click_logic.tres" id="2_3s6fy"]
@@ -10,12 +10,14 @@
 [ext_resource type="Resource" uid="uid://4bd3gefdkf5e" path="res://03_Resources/ButtonLogic/settings_button_logic.tres" id="7_6fc1u"]
 [ext_resource type="Resource" uid="uid://b0yagwjph181a" path="res://03_Resources/ButtonLogic/credits_button_logic.tres" id="8_w6mnm"]
 [ext_resource type="Resource" uid="uid://b8kalgc1kr6vy" path="res://03_Resources/ButtonLogic/quit_button_logic.tres" id="9_lrad1"]
+[ext_resource type="Resource" uid="uid://3vkgbrykl4kv" path="res://03_Resources/ButtonLogic/did_you_think_that_would_work.tres" id="10_1mpdp"]
+[ext_resource type="Resource" uid="uid://bsj8al43uyuga" path="res://03_Resources/ButtonLogic/lock_button_logic.tres" id="11_20qry"]
 
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
 split_padding = 10.0
 error_tolerance = 0.1
-button_logic_types = [ExtResource("2_wpqcw"), ExtResource("3_0xbxj"), ExtResource("4_yga31"), ExtResource("2_3s6fy"), ExtResource("6_560x1"), ExtResource("7_6fc1u"), ExtResource("8_w6mnm"), ExtResource("9_lrad1")]
+button_logic_types = [ExtResource("2_wpqcw"), ExtResource("3_0xbxj"), ExtResource("4_yga31"), ExtResource("2_3s6fy"), ExtResource("6_560x1"), ExtResource("7_6fc1u"), ExtResource("8_w6mnm"), ExtResource("9_lrad1"), ExtResource("10_1mpdp"), ExtResource("11_20qry")]
 
 [node name="GutterManager" parent="." instance=ExtResource("2_x50wr")]
 

@@ -2,20 +2,27 @@ class_name SplittableButton
 
 extends Node2D
 
-@export var hover_color: Color
+signal lock_toggled
+
+@export var hover_color : Color
+@export var lock_hover_color : Color
+@export var lock_color : Color
+@export var held_color : Color
 
 @onready var polygon : SplittablePolygon = $SplittablePolygon
 @onready var _control_parent : Control = $SplittablePolygon/Control
-@onready var _label : RichTextLabel = $SplittablePolygon/Control/VBoxContainer/RichTextLabel
+@onready var _control_vbox_container : VBoxContainer = $SplittablePolygon/Control/VBoxContainer
 
 @onready var _mouse_on_button : bool = false
 @onready var _mouse_on_gutters : bool = false
 @onready var _can_select_buttons : bool = false
+@onready var _can_lock_buttons : bool = false
 
-enum State {NORMAL, HOVERED, HELD, HELD_UNHOVERED, LOCKED}
+enum State {NORMAL, HOVERED, HELD, HELD_UNHOVERED, LOCKED, LOCK_HOVER, UNLOCK_HOVER}
 @onready var state : State = State.NORMAL
 
 var _logic : ButtonLogic
+var _control_tree : Node
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -54,6 +61,7 @@ func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, er
 		gutter_manager.gutters_exited.connect(on_gutters_unhovered)
 	
 	set_button_logic(logic)
+	switch_state(State.NORMAL)
 
 func _unhandled_input(event):
 	match state:
@@ -75,6 +83,16 @@ func _unhandled_input(event):
 				switch_state(State.NORMAL)
 		State.LOCKED:
 			pass
+		State.LOCK_HOVER:
+			if event.is_action_pressed("left_click") and not event.is_echo():
+				get_viewport().set_input_as_handled()
+				switch_state(State.LOCKED)
+				lock_toggled.emit()
+		State.UNLOCK_HOVER:
+			if event.is_action_pressed("left_click") and not event.is_echo():
+				get_viewport().set_input_as_handled()
+				switch_state(State.HOVERED)
+				lock_toggled.emit()
 
 func split_across_line(line : LineData) -> Array:
 	return polygon.split_across_line(line)
@@ -102,17 +120,26 @@ func on_enter_button_selection_game_state():
 func on_exit_button_selection_game_state():
 	_can_select_buttons = false
 	hover_check()
+	
+func on_enter_locking_game_state():
+	_can_lock_buttons = true
+	hover_check()
+
+func on_exit_locking_game_state():
+	_can_lock_buttons = false
+	hover_check()
 
 func show_button_hover_effects(show : bool):
-	#Button hover effects here
 	if show:
-		polygon.set_polygon_color(hover_color)
-		# print("Hovering" + name)
 		pass
 	else:
-		polygon.set_polygon_color(_logic.color)
 		pass
-	pass
+
+func show_button_lock_hover_effects(show : bool):
+	if show:
+		pass
+	else:
+		pass
 
 func switch_state(new_state : State):
 	# exit logic
@@ -120,13 +147,16 @@ func switch_state(new_state : State):
 		State.NORMAL:
 			pass
 		State.HOVERED:
-			if new_state != State.HOVERED:
-				show_button_hover_effects(false)
+			pass
 		State.HELD:
 			pass
 		State.HELD_UNHOVERED:
 			pass
 		State.LOCKED:
+			pass
+		State.LOCK_HOVER:
+			pass
+		State.UNLOCK_HOVER:
 			pass
 	
 	state = new_state
@@ -134,15 +164,19 @@ func switch_state(new_state : State):
 	# entry logic
 	match state:
 		State.NORMAL:
-			pass
+			polygon.set_polygon_color(_logic.color)
 		State.HOVERED:
-			show_button_hover_effects(true)
+			polygon.set_polygon_color(hover_color)
 		State.HELD:
-			pass
+			polygon.set_polygon_color(held_color)
 		State.HELD_UNHOVERED:
-			pass
+			polygon.set_polygon_color(held_color)
 		State.LOCKED:
-			pass
+			polygon.set_polygon_color(lock_color)
+		State.LOCK_HOVER:
+			polygon.set_polygon_color(lock_hover_color)
+		State.UNLOCK_HOVER:
+			polygon.set_polygon_color(lock_hover_color)
 
 func hover_check():
 	# If the button can reach or leave a hovered state, then check and move accordingly
@@ -150,6 +184,8 @@ func hover_check():
 		State.NORMAL:
 			if _can_select_buttons and _mouse_on_button and not _mouse_on_gutters:
 				switch_state(State.HOVERED)
+			elif _can_lock_buttons and _mouse_on_button and not _mouse_on_gutters:
+				switch_state(State.LOCK_HOVER)
 		State.HOVERED:
 			if (not _can_select_buttons) or _mouse_on_gutters or not _mouse_on_button:
 				switch_state(State.NORMAL)
@@ -163,14 +199,31 @@ func hover_check():
 				switch_state(State.NORMAL)
 			elif _mouse_on_button and not _mouse_on_gutters:
 				switch_state(State.HELD)
+		State.LOCKED:
+			if _can_lock_buttons and _mouse_on_button and not _mouse_on_gutters:
+				switch_state(State.UNLOCK_HOVER)
+		State.LOCK_HOVER:
+			if (not _can_lock_buttons) or _mouse_on_gutters or not _mouse_on_button:
+				switch_state(State.NORMAL)
+		State.UNLOCK_HOVER:
+			if (not _can_lock_buttons) or _mouse_on_gutters or not _mouse_on_button:
+				switch_state(State.LOCKED)
 
 func get_edges() -> Array:
 	return polygon._edge_dictionary.values()
-
-func set_label_text(text : String):
-	_label.text = text
 	
 func set_button_logic(logic : ButtonLogic):
 	_logic = logic
 	_logic.on_ready(self)
 	polygon.set_polygon_color(_logic.color)
+	
+func add_tree_to_control(new_tree : Node):
+	_control_tree = new_tree
+	_control_vbox_container.add_child(_control_tree)
+
+func clear_control_tree():
+	if _control_vbox_container.get_children().size() > 0:
+		_control_tree.queue_free()
+
+func is_locked() -> bool:
+	return state == State.LOCKED

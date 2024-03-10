@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="LockButtonLogic" load_steps=2 format=3 uid="uid://bsj8al43uyuga"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/lock_button_logic.gd" id="1_3b1g8"]
+
+[resource]
+script = ExtResource("1_3b1g8")
+color = Color(0.407843, 0, 0, 1)

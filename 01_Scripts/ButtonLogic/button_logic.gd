@@ -14,15 +14,22 @@ func on_ready(button : SplittableButton):
 
 func on_button_clicked(button : SplittableButton):
 	# print("Super Button pressed")
-	button.set_button_logic(next_button_logic)
-	game_container.click_neighbors(button)
+	if not button.is_locked():
+		button.set_button_logic(next_button_logic)
+		game_container.click_neighbors(button)
+		game_container.queue_apply()
 	
 func on_neighbor_clicked(button : SplittableButton):
-	# print("Super Button neighbor pressed")
-	button.set_button_logic(next_button_logic)
+	#print("Super Button neighbor pressed")
+	if not button.is_locked():
+		button.set_button_logic(next_button_logic)
+		game_container.queue_apply()
 
 func on_applied(button : SplittableButton):
 	pass
 
 func on_hovered(button : SplittableButton):
 	pass
+
+func create_control_tree() -> Node:
+	return Node.new()
