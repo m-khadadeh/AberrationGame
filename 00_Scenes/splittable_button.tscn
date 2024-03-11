@@ -1,14 +1,17 @@
-[gd_scene load_steps=5 format=3 uid="uid://1q5qduy712sh"]
+[gd_scene load_steps=7 format=3 uid="uid://1q5qduy712sh"]
 
 [ext_resource type="Script" path="res://01_Scripts/splittable_button.gd" id="1_6hocm"]
 [ext_resource type="PackedScene" uid="uid://bi2tij4ucel8j" path="res://00_Scenes/splittable_polygon.tscn" id="2_6yksf"]
-[ext_resource type="Shader" path="res://04_Shaders/splittable_button.gdshader" id="3_yftbk"]
+[ext_resource type="Shader" path="res://04_Shaders/rim_button.gdshader" id="3_7chba"]
+[ext_resource type="Material" uid="uid://d2rqbtj420vq6" path="res://05_Materials/gem_shader_material.tres" id="4_jo13d"]
+[ext_resource type="Texture2D" uid="uid://dwdk12vunnn2g" path="res://polygon_tex.tres" id="5_th13r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_eb677"]
 resource_local_to_scene = true
-shader = ExtResource("3_yftbk")
+shader = ExtResource("3_7chba")
 shader_parameter/polygon_color = Vector3(1, 1, 1)
 shader_parameter/edge_min = null
+shader_parameter/hovered = null
 
 [node name="SplittableButton" type="Node2D"]
 script = ExtResource("1_6hocm")
@@ -18,17 +21,22 @@ lock_color = Color(0.211765, 0.211765, 0.211765, 1)
 held_color = Color(1, 1, 1, 1)
 
 [node name="SplittablePolygon" parent="." instance=ExtResource("2_6yksf")]
-clip_children = 2
 material = SubResource("ShaderMaterial_eb677")
+stroke_width = 15.0
 
-[node name="Control" type="Control" parent="SplittablePolygon"]
+[node name="GemPolygon" type="Polygon2D" parent="."]
+clip_children = 2
+material = ExtResource("4_jo13d")
+texture = ExtResource("5_th13r")
+
+[node name="Control" type="Control" parent="GemPolygon"]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 577.0
 offset_bottom = 361.0
 mouse_filter = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="SplittablePolygon/Control"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GemPolygon/Control"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

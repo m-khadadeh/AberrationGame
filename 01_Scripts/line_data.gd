@@ -48,3 +48,7 @@ func is_parallel(line : LineData, tolerance : float) -> bool:
 
 func get_perpendicular_direction() -> Vector2:
 	return Vector2(direction_vector.y, -direction_vector.x)
+	
+func get_distance_to_point(point : Vector2) -> float:
+	var bisector = LineData.new(point, get_perpendicular_direction())
+	return bisector.get_intersection_parameter(self)

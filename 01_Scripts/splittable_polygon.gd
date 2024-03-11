@@ -11,7 +11,7 @@ var _segment_array: Array
 var _edge_dictionary : Dictionary
 var _error_tolerance : float
 	
-func initialize(edge_dictionary : Dictionary, polygon_color : Color, tolerance : float, center : Vector2):
+func initialize(edge_dictionary : Dictionary, polygon_color : Color, tolerance : float, center : Vector2) -> PackedVector2Array:
 	_edge_dictionary = edge_dictionary
 	_polygon_verts.clear()
 	var vertex_array = _edge_dictionary.keys()
@@ -20,28 +20,33 @@ func initialize(edge_dictionary : Dictionary, polygon_color : Color, tolerance :
 	var new_polygon_indices : Array
 	var offset_lines : Array
 	var offset_points : PackedVector2Array
+	var export_points : PackedVector2Array
+	# stroke width check and fix if necessary
+	for edge in _edge_dictionary.values():
+		var distance_to_center = edge._line.get_distance_to_point(center)
+		if distance_to_center < stroke_width:
+			stroke_width = distance_to_center
 	for i in range(vertex_array.size()):
 		offset_lines.append( \
 		LineData.new( \
 		LineData.new(vertex_array[i], _edge_dictionary[vertex_array[i]]._line.get_perpendicular_direction()).get_point_at_parameter(-stroke_width), \
 		_edge_dictionary[vertex_array[i]]._line.direction_vector))
 	for i in range(vertex_array.size()):
-		offset_points.append(offset_lines[i].get_intersecton_with_line(offset_lines[(i + 1) % vertex_array.size()]))
+		offset_points.append(offset_lines[i].get_intersecton_with_line(offset_lines[(i - 1 + vertex_array.size()) % vertex_array.size()]))
 	for i in range(vertex_array.size()):
 		_polygon_verts.append(PolygonVertexData.new(i, vertex_array[i], true))
-		new_polygon_points.append(center)
 		new_polygon_points.append(offset_points[i])
-		new_polygon_points.append(offset_points[(i - 1 + vertex_array.size()) % vertex_array.size()])
 		new_polygon_points.append(vertex_array[i])
 		new_polygon_points.append(vertex_array[(i - 1 + vertex_array.size()) % vertex_array.size()])
+		new_polygon_points.append(offset_points[(i - 1 + vertex_array.size()) % vertex_array.size()])
+		export_points.append(center)
+		export_points.append(offset_points[i])
+		export_points.append(offset_points[(i - 1 + vertex_array.size()) % vertex_array.size()])
 		new_UV.append(Vector2(0.0,0.0)) #0
-		new_UV.append(Vector2(0.9,1.0)) #1
-		new_UV.append(Vector2(0.9,0.0)) #2
-		new_UV.append(Vector2(1.0,0.0)) #3
-		new_UV.append(Vector2(1.0,0.0)) #4
-		new_polygon_indices.append([5 * i, 5 * i + 1, 5 * i + 2])
-		new_polygon_indices.append([5 * i + 1, 5 * i + 2, 5 * i + 3])
-		new_polygon_indices.append([5 * i + 4, 5 * i + 3, 5 * i + 2])
+		new_UV.append(Vector2(1.0,0.0)) #1
+		new_UV.append(Vector2(1.0,1.0)) #2
+		new_UV.append(Vector2(0.0,1.0)) #2
+		new_polygon_indices.append([4 * i, 4 * i + 1, 4 * i + 2, 4 * i + 3])
 	polygon = new_polygon_points
 	uv = new_UV
 	polygons = new_polygon_indices
@@ -49,6 +54,7 @@ func initialize(edge_dictionary : Dictionary, polygon_color : Color, tolerance :
 	_error_tolerance = tolerance
 	collider.polygon = vertex_array
 	set_polygon_color(polygon_color)
+	return export_points
 
 func set_polygon_color(new_color : Color):
 	material.set_shader_parameter("polygon_color", new_color)

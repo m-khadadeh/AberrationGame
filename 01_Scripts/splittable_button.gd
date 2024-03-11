@@ -10,8 +10,9 @@ signal lock_toggled
 @export var held_color : Color
 
 @onready var polygon : SplittablePolygon = $SplittablePolygon
-@onready var _control_parent : Control = $SplittablePolygon/Control
-@onready var _control_vbox_container : VBoxContainer = $SplittablePolygon/Control/VBoxContainer
+@onready var _gem_polygon : Polygon2D = $GemPolygon
+@onready var _control_parent : Control = $GemPolygon/Control
+@onready var _control_vbox_container : VBoxContainer = $GemPolygon/Control/VBoxContainer
 
 @onready var _mouse_on_button : bool = false
 @onready var _mouse_on_gutters : bool = false
@@ -53,7 +54,7 @@ func initialize(game_container : GameContainer, edge_dictionary : Dictionary, gu
 	
 	centroid /= edge_dictionary.keys().size()
 	
-	polygon.initialize(edge_dictionary, logic.color, error_tolerance, centroid)
+	var gem_points : PackedVector2Array = polygon.initialize(edge_dictionary, logic.color, error_tolerance, centroid)
 	var size = Vector2(max_x - min_x, max_y - min_y)
 	
 	_control_parent.set_size(size)
@@ -62,6 +63,23 @@ func initialize(game_container : GameContainer, edge_dictionary : Dictionary, gu
 	if reset:
 		gutter_manager.gutters_entered.connect(on_gutters_hovered)
 		gutter_manager.gutters_exited.connect(on_gutters_unhovered)
+	
+	var i = 0
+	var gem_uv_list : PackedVector2Array
+	var gem_polygon_list : PackedVector2Array
+	var gem_polygon_indices : Array
+	while i < gem_points.size():
+		gem_polygon_list.append(gem_points[i])
+		gem_polygon_list.append(gem_points[i+1])
+		gem_polygon_list.append(gem_points[i+2])
+		gem_uv_list.append(Vector2(0.0, 0.0))
+		gem_uv_list.append(Vector2(1.0, 0.0))
+		gem_uv_list.append(Vector2(1.0, 1.0))
+		gem_polygon_indices.append([i, i+1, i+2])
+		i += 3
+	_gem_polygon.polygon = gem_polygon_list
+	_gem_polygon.uv = gem_uv_list
+	_gem_polygon.polygons = gem_polygon_indices
 	
 	set_button_logic(logic)
 	switch_state(State.NORMAL)
@@ -173,19 +191,33 @@ func switch_state(new_state : State):
 	# entry logic
 	match state:
 		State.NORMAL:
+			_gem_polygon.material.set_shader_parameter("polygon_color", _logic.color)
 			polygon.set_polygon_color(_logic.color)
+			polygon.material.set_shader_parameter("hovered", false)
 		State.HOVERED:
+			_gem_polygon.material.set_shader_parameter("polygon_color", hover_color)
 			polygon.set_polygon_color(hover_color)
+			polygon.material.set_shader_parameter("hovered", true)
 		State.HELD:
+			_gem_polygon.material.set_shader_parameter("polygon_color", held_color)
 			polygon.set_polygon_color(held_color)
+			polygon.material.set_shader_parameter("hovered", true)
 		State.HELD_UNHOVERED:
+			_gem_polygon.material.set_shader_parameter("polygon_color", held_color)
 			polygon.set_polygon_color(held_color)
+			polygon.material.set_shader_parameter("hovered", true)
 		State.LOCKED:
+			_gem_polygon.material.set_shader_parameter("polygon_color", lock_color)
 			polygon.set_polygon_color(lock_color)
+			polygon.material.set_shader_parameter("hovered", false)
 		State.LOCK_HOVER:
+			_gem_polygon.material.set_shader_parameter("polygon_color", lock_hover_color)
 			polygon.set_polygon_color(lock_hover_color)
+			polygon.material.set_shader_parameter("hovered", true)
 		State.UNLOCK_HOVER:
+			_gem_polygon.material.set_shader_parameter("polygon_color", lock_hover_color)
 			polygon.set_polygon_color(lock_hover_color)
+			polygon.material.set_shader_parameter("hovered", true)
 
 func hover_check():
 	# If the button can reach or leave a hovered state, then check and move accordingly
@@ -226,6 +258,7 @@ func get_edges() -> Array:
 func set_button_logic(logic : ButtonLogic):
 	_logic = logic
 	_logic.on_ready(self)
+	_gem_polygon.material.set_shader_parameter("polygon_color", _logic.color)
 	polygon.set_polygon_color(_logic.color)
 	
 func add_tree_to_control(new_tree : Node):
