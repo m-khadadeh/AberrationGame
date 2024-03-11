@@ -20,7 +20,7 @@ func on_applied(button : SplittableButton):
 	pass
 
 func on_hovered(button : SplittableButton):
-	pass
+	super(button)
 	
 func create_control_tree() -> Node:
 	var new_node = RichTextLabel.new()
@@ -28,6 +28,7 @@ func create_control_tree() -> Node:
 	new_node.fit_content = true
 	new_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	new_node.theme = preload("res://06_Themes/game_theme.tres")
+	new_node.theme_type_variation = "CrystalLabel"
 	new_node.text = "[center]Split[/center]"
 	new_node.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 	return new_node

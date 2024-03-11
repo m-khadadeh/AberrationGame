@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://dyii4celwodvq"]
+
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_n7d5u"]
+
+[node name="QuitTooltip" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_n7d5u")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_n7d5u")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "[center][color=#21258f]Quit[/color][/center]"
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_n7d5u")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "When every button on the screen is this button, you'll quit the game.
+Followed by: [color=#aa0000]Start[/color]
+Splits into: [color=#21258f]Quit[/color] and [color=#21258f]Quit[/color]"
+fit_content = true

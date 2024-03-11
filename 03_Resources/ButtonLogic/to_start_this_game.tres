@@ -1,8 +1,9 @@
-[gd_resource type="Resource" script_class="IDareYouToStartThisGameLogic" load_steps=4 format=3 uid="uid://85ag2w5vybah"]
+[gd_resource type="Resource" script_class="IDareYouToStartThisGameLogic" load_steps=5 format=3 uid="uid://85ag2w5vybah"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/i_dare_you_to_start_this_game_logic.gd" id="1_7fv5k"]
 [ext_resource type="Resource" uid="uid://b8kalgc1kr6vy" path="res://03_Resources/ButtonLogic/quit_button_logic.tres" id="2_b3l6f"]
 [ext_resource type="Resource" uid="uid://b0yagwjph181a" path="res://03_Resources/ButtonLogic/credits_button_logic.tres" id="3_shpj4"]
+[ext_resource type="PackedScene" uid="uid://3skcmauymief" path="res://00_Scenes/Tooltips/i_dare_you_tooltip.tscn" id="4_x5hvm"]
 
 [resource]
 script = ExtResource("1_7fv5k")
@@ -11,3 +12,4 @@ split_on_ready = false
 split_button_logic_replace = ExtResource("3_shpj4")
 split_button_logic_next = ExtResource("2_b3l6f")
 color = Color(0.133333, 0.262745, 0.341176, 1)
+tooltip_scene = ExtResource("4_x5hvm")

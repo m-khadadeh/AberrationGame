@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="QuitButtonLogic" load_steps=2 format=3 uid="uid://b8kalgc1kr6vy"]
+[gd_resource type="Resource" script_class="QuitButtonLogic" load_steps=3 format=3 uid="uid://b8kalgc1kr6vy"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/quit_button_logic.gd" id="1_4khm4"]
+[ext_resource type="PackedScene" uid="uid://dyii4celwodvq" path="res://00_Scenes/Tooltips/quit_tooltip.tscn" id="2_x2ote"]
 
 [resource]
 script = ExtResource("1_4khm4")
 color = Color(0.129412, 0.145098, 0.560784, 1)
+tooltip_scene = ExtResource("2_x2ote")

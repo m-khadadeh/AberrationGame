@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://rdid5wc8pr4o"]
+
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_uh2ej"]
+
+[node name="LockTooltip" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_uh2ej")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_uh2ej")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "[center][color=#680000]Lock[/color][/center]"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_uh2ej")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "Toggles whether a button is locked or unlocked"
+fit_content = true
+
+[node name="HSeparator3" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_uh2ej")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "When every button on the screen is this button, every button will toggle its locked/unlocked state.
+Followed by: [color=#baa126]Settings[/color]
+Splits into: [color=#680000]Lock[/color] and [color=#680000]Lock[/color]"
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_uh2ej")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "The only way to advance this button is by clicking it."
+fit_content = true

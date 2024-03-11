@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BigTextButtonLogic" load_steps=5 format=3 uid="uid://7kophoxctusp"]
+
+[ext_resource type="Resource" uid="uid://b0yagwjph181a" path="res://03_Resources/ButtonLogic/credits_button_logic.tres" id="1_47lxw"]
+[ext_resource type="Resource" uid="uid://dm5dh4q32fdq6" path="res://03_Resources/ButtonLogic/split_on_click_logic.tres" id="1_jxas7"]
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/big_text_button.gd" id="2_svgbe"]
+[ext_resource type="PackedScene" uid="uid://cr218ywo6a1kx" path="res://00_Scenes/Tooltips/press_t_for_tooltips.tscn" id="4_yty80"]
+
+[resource]
+script = ExtResource("2_svgbe")
+label_text = "Press T to toggle tooltips.
+You'll need them!"
+next_button_logic = ExtResource("1_47lxw")
+split_button_logic_replace = ExtResource("1_jxas7")
+split_button_logic_next = ExtResource("1_47lxw")
+color = Color(0.368627, 0.490196, 0.239216, 1)
+tooltip_scene = ExtResource("4_yty80")

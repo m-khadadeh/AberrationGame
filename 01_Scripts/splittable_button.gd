@@ -23,13 +23,16 @@ enum State {NORMAL, HOVERED, HELD, HELD_UNHOVERED, LOCKED, LOCK_HOVER, UNLOCK_HO
 
 var _logic : ButtonLogic
 var _control_tree : Node
+var _game_container : GameContainer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	polygon.area.mouse_entered.connect(on_mouse_enter_button)
 	polygon.area.mouse_exited.connect(on_mouse_exit_button)
 
-func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):	
+func initialize(game_container : GameContainer, edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):	
+	_game_container = game_container
+	
 	var points : Array = edge_dictionary.keys()
 	
 	var centroid = Vector2(0,0)
@@ -63,6 +66,11 @@ func initialize(edge_dictionary : Dictionary, gutter_manager : GutterManager, er
 	set_button_logic(logic)
 	switch_state(State.NORMAL)
 
+func _input(event):
+	if event.is_action_pressed("toggle_tooltips") and _mouse_on_button and not _mouse_on_gutters and not event.is_echo():
+		print("setting tooltip value")
+		_logic.on_hovered(self)
+
 func _unhandled_input(event):
 	match state:
 		State.NORMAL:
@@ -74,6 +82,7 @@ func _unhandled_input(event):
 				switch_state(State.HELD)
 		State.HELD:
 			if event.is_action_released("left_click"):
+				_logic.on_hovered(self)
 				if _can_select_buttons:
 					switch_state(State.HOVERED)
 				else:
@@ -180,6 +189,8 @@ func switch_state(new_state : State):
 
 func hover_check():
 	# If the button can reach or leave a hovered state, then check and move accordingly
+	if _mouse_on_button and not _mouse_on_gutters:
+		_logic.on_hovered(self)
 	match state:
 		State.NORMAL:
 			if _can_select_buttons and _mouse_on_button and not _mouse_on_gutters:

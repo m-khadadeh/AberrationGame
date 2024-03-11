@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="SettingsButtonLogic" load_steps=2 format=3 uid="uid://4bd3gefdkf5e"]
+[gd_resource type="Resource" script_class="SettingsButtonLogic" load_steps=3 format=3 uid="uid://4bd3gefdkf5e"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/settings_button_logic.gd" id="1_sbopu"]
+[ext_resource type="PackedScene" uid="uid://bmciwcmjrvsb5" path="res://00_Scenes/Tooltips/settings_tooltip.tscn" id="2_5jisk"]
 
 [resource]
 script = ExtResource("1_sbopu")
 color = Color(0.729412, 0.631373, 0.14902, 1)
+tooltip_scene = ExtResource("2_5jisk")

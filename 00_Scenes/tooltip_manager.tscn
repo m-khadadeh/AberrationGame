@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://c60yn7ijwisw"]
+
+[ext_resource type="Script" path="res://01_Scripts/tooltip_manager.gd" id="1_la7yx"]
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_trhki"]
+
+[node name="TooltipManager" type="MarginContainer"]
+custom_minimum_size = Vector2(400, 0)
+offset_right = 1.0
+offset_bottom = 23.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("1_la7yx")
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_trhki")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15

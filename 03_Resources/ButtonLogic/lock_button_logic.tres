@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="LockButtonLogic" load_steps=2 format=3 uid="uid://bsj8al43uyuga"]
+[gd_resource type="Resource" script_class="LockButtonLogic" load_steps=3 format=3 uid="uid://bsj8al43uyuga"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/lock_button_logic.gd" id="1_3b1g8"]
+[ext_resource type="PackedScene" uid="uid://rdid5wc8pr4o" path="res://00_Scenes/Tooltips/lock_tooltip.tscn" id="2_88aai"]
 
 [resource]
 script = ExtResource("1_3b1g8")
 color = Color(0.407843, 0, 0, 1)
+tooltip_scene = ExtResource("2_88aai")

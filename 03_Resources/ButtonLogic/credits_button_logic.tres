@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="CreditsButtonLogic" load_steps=2 format=3 uid="uid://b0yagwjph181a"]
+[gd_resource type="Resource" script_class="CreditsButtonLogic" load_steps=3 format=3 uid="uid://b0yagwjph181a"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/credits_button_logic.gd" id="1_jppnf"]
+[ext_resource type="PackedScene" uid="uid://cd5n4tj8lky3d" path="res://00_Scenes/Tooltips/credits_tooltip.tscn" id="2_pr6p8"]
 
 [resource]
 script = ExtResource("1_jppnf")
 color = Color(0.368627, 0.627451, 0, 1)
+tooltip_scene = ExtResource("2_pr6p8")

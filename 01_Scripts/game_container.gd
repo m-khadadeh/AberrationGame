@@ -6,6 +6,7 @@ extends Node2D
 
 @onready var _gutter_parent : GutterManager = $GutterManager
 @onready var _button_parent : Node2D = $ButtonParent
+@onready var _tooltip_manager : TooltipManager = $TooltipManager
 
 var _button_array : Array
 var _line_array : Array
@@ -17,6 +18,8 @@ var _button_graph : Dictionary
 var _splitting_queued : bool
 var _locking_queued : bool
 var _applying_queued : bool
+
+@onready var show_tooltips : bool = false
 
 enum GameState {SELECTING_BUTTONS, SLICING, LOCKING}
 var current_state : GameState
@@ -59,6 +62,8 @@ func _ready():
 	recalculate_points_of_intersection()
 	recreate_graph()
 	
+	_tooltip_manager.show_tooltip(false)
+	
 	switch_state_to(GameState.SELECTING_BUTTONS)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -89,9 +94,15 @@ func _create_button(edge_dictionary : Dictionary, logic : ButtonLogic) -> Splitt
 	new_button = _button_scene.instantiate()
 	_button_parent.add_child(new_button)
 	
-	new_button.initialize(edge_dictionary, _gutter_parent, error_tolerance, logic)
+	new_button.initialize(self, edge_dictionary, _gutter_parent, error_tolerance, logic)
 	new_button.lock_toggled.connect(on_button_lock_toggled)
 	return new_button
+
+func _input(event):
+	if event.is_action_pressed("toggle_tooltips") and not event.is_echo():
+		print("toggling tooltips")
+		show_tooltips = not show_tooltips
+		_tooltip_manager.show_tooltip(show_tooltips)
 
 func _unhandled_input(event):
 	match current_state:
@@ -138,7 +149,7 @@ func do_split() -> bool:
 	
 	if safe_to_continue:
 		for button in buttons_to_split:
-			_button_array[button].initialize(buttons_to_split[button], _gutter_parent, error_tolerance, old_button_new_logic[button], false)
+			_button_array[button].initialize(self, buttons_to_split[button], _gutter_parent, error_tolerance, old_button_new_logic[button], false)
 		for i in range(buttons_to_append.size()):
 			_button_array.append(_create_button(buttons_to_append[i], new_button_new_logic[i]))
 			
@@ -226,3 +237,6 @@ func click_neighbors(clicked_button : SplittableButton):
 	
 func queue_apply():
 	_applying_queued = true
+
+func create_tooltip(scene : PackedScene):
+	_tooltip_manager.set_tree(scene)

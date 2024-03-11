@@ -1,0 +1,37 @@
+[gd_scene load_steps=2 format=3 uid="uid://5wg3ji87n7f6"]
+
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_cicew"]
+
+[node name="PlayTooltip" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_cicew")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_cicew")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "[center][color=#aa0000]Start[/color][/center]"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_cicew")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "When every button on the screen is this button, [shake rate=20.0 level=5 connected=0]the game starts[/shake]!
+Followed by: [color=#ad5527]Did you really think that'd work?[/color]
+Splits into: [color=#aa0000]Start[/color] and [color=#aa0000]Start[/color]"
+fit_content = true

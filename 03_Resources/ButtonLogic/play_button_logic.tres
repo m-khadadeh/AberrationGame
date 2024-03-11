@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="PlayButtonLogic" load_steps=2 format=3 uid="uid://dmw6nctnccqpv"]
+[gd_resource type="Resource" script_class="PlayButtonLogic" load_steps=3 format=3 uid="uid://dmw6nctnccqpv"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/play_button_logic.gd" id="1_obgq5"]
+[ext_resource type="PackedScene" uid="uid://5wg3ji87n7f6" path="res://00_Scenes/Tooltips/play_tooltip.tscn" id="2_k0s82"]
 
 [resource]
 script = ExtResource("1_obgq5")
 color = Color(0.666667, 0, 0, 1)
+tooltip_scene = ExtResource("2_k0s82")

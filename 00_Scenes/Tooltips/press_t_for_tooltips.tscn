@@ -1,0 +1,50 @@
+[gd_scene load_steps=2 format=3 uid="uid://cr218ywo6a1kx"]
+
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_r5xui"]
+
+[node name="PressTforTooltipsTooltip" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_r5xui")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_r5xui")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "[center][color=#5e7d3d]Press T to toggle tooltips.
+You'll need them![/color][/center]"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_r5xui")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "Good work!"
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_r5xui")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "When every button on the screen is this button, tooltips will get toggled.
+Followed by: [color=#5ea000]Credits[/color]
+Splits into: [color=#821c63]Split[/color] and [color=#5ea000]Credits[/color]"
+fit_content = true

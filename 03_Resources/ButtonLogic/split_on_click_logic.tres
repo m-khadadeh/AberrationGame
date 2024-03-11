@@ -1,7 +1,9 @@
-[gd_resource type="Resource" script_class="SplitOnClickLogic" load_steps=2 format=3 uid="uid://dm5dh4q32fdq6"]
+[gd_resource type="Resource" script_class="SplitOnClickLogic" load_steps=3 format=3 uid="uid://dm5dh4q32fdq6"]
 
 [ext_resource type="Script" path="res://01_Scripts/ButtonLogic/split_on_click_logic.gd" id="1_w3bby"]
+[ext_resource type="PackedScene" uid="uid://cg627fm3ssn7r" path="res://00_Scenes/Tooltips/split_tooltip.tscn" id="2_swnhd"]
 
 [resource]
 script = ExtResource("1_w3bby")
 color = Color(0.509804, 0.109804, 0.388235, 1)
+tooltip_scene = ExtResource("2_swnhd")

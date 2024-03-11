@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg627fm3ssn7r"]
+
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_hh53l"]
+
+[node name="SplitTooltip" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_hh53l")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_hh53l")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "[center][color=#821c63]Split[/color][/center]"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel4" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_hh53l")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "Splits the buttons on the screen across a line."
+fit_content = true
+
+[node name="HSeparator3" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_hh53l")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "When every button on the screen is this button, you're gonna split way more times than you bargained for.
+Followed by: [color=#680000]Lock[/color]
+Splits into: [color=#821c63]Split[/color] and [color=#680000]Lock[/color]"
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_hh53l")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "The only way to advance this button is by clicking it."
+fit_content = true

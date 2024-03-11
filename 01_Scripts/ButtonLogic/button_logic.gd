@@ -7,6 +7,8 @@ extends Resource
 
 @export var color : Color
 
+@export var tooltip_scene : PackedScene
+
 var game_container : GameContainer
 
 func on_ready(button : SplittableButton):
@@ -29,7 +31,7 @@ func on_applied(button : SplittableButton):
 	pass
 
 func on_hovered(button : SplittableButton):
-	pass
+	game_container.create_tooltip(tooltip_scene)
 
 func create_control_tree() -> Node:
 	return Node.new()
