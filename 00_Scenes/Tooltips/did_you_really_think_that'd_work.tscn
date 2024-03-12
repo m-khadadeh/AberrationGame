@@ -19,7 +19,7 @@ mouse_filter = 2
 theme = ExtResource("1_i4npf")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "[center][color=#ad5527]Did you really think that'd work?[/color][/center]"
+text = "[center][color=#ad5527]Did you really think that would work?[/color][/center]"
 fit_content = true
 
 [node name="HSeparator" type="HSeparator" parent="."]

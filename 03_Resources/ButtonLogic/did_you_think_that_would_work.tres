@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("1_0gl8v")
 label_text = "Did you really think
-that'd work?"
+that would work?"
 next_button_logic = ExtResource("1_557ga")
 split_button_logic_replace = ExtResource("1_557ga")
 split_button_logic_next = ExtResource("3_phhu0")

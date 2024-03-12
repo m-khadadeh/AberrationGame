@@ -1,6 +1,7 @@
 class_name AudioManager
 extends Node
 
+@export var volume_dbs : float
 @export var sound_dictionary : Dictionary
 
 @onready var muted = false
@@ -8,6 +9,7 @@ extends Node
 @onready var _music_player : AudioStreamPlayer = $AudioStreamPlayer
 
 func _ready():
+	_music_player.volume_db = volume_dbs
 	pass
 
 func toggle_mute():
@@ -25,6 +27,7 @@ func play_sfx(sound : String):
 		add_child(new_audio_player)
 		new_audio_player.stream = sound_dictionary[sound]
 		new_audio_player.finished.connect(new_audio_player.queue_free)
+		new_audio_player.volume_db = volume_dbs * 0.6;
 		new_audio_player.play()
 
 func allow_music():

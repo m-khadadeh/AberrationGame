@@ -43,7 +43,7 @@ mouse_filter = 2
 theme = ExtResource("1_h7k3u")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "When every button on the screen is this button... wait that's impossible, nevermind.
-Followed by: [color=#5e7d3d]Press T to toggle tooltips. You'll need them![/color]
+text = "When every button on the screen is this button... wait that is impossible, nevermind.
+Followed by: [color=#5e7d3d]Press T to toggle tooltips. You will need them![/color]
 Splits into: [color=#5b3d35]Mute[/color] and [color=#5b3d35]Mute[/color]"
 fit_content = true

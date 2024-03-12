@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("2_svgbe")
 label_text = "Press T to toggle tooltips.
-You'll need them!"
+You will need them!"
 next_button_logic = ExtResource("1_47lxw")
 split_button_logic_replace = ExtResource("1_jxas7")
 split_button_logic_next = ExtResource("1_47lxw")

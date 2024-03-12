@@ -19,8 +19,7 @@ mouse_filter = 2
 theme = ExtResource("1_r5xui")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "[center][color=#5e7d3d]Press T to toggle tooltips.
-You'll need them![/color][/center]"
+text = "[center][color=#5e7d3d]Press T to toggle tooltips. You will need them![/color][/center]"
 fit_content = true
 
 [node name="HSeparator" type="HSeparator" parent="."]

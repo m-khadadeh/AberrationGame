@@ -43,7 +43,7 @@ mouse_filter = 2
 theme = ExtResource("1_hh53l")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "When every button on the screen is this button, you're gonna split [u]Way More Times Than You Bargained For[/u].
+text = "When every button on the screen is this button, you are gonna split [u]Way More Times Than You Bargained For[/u].
 Followed by: [color=#680000]Lock[/color]
 Splits into: [color=#821c63]Split[/color] and [color=#680000]Lock[/color]"
 fit_content = true

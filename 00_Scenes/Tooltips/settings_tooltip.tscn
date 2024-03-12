@@ -32,6 +32,6 @@ theme = ExtResource("1_x77lm")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
 text = "When every button on the screen is this button, you get to see the settings!
-Followed by: [color=#5e7d3d]Press T to toggle tooltips. You'll need them![/color]
+Followed by: [color=#5e7d3d]Press T to toggle tooltips. You will need them![/color]
 Splits into: [color=#baa126]Settings[/color] and [color=#baa126]Settings[/color]"
 fit_content = true

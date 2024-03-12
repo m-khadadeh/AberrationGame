@@ -5,7 +5,7 @@
 
 [node name="AudioManager" type="Node"]
 script = ExtResource("1_o2c4i")
+volume_dbs = -15.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_38ir2")
-volume_db = -10.0

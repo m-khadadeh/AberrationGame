@@ -31,7 +31,7 @@ mouse_filter = 2
 theme = ExtResource("1_mhexv")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "When every button on the screen is this button, you'll get to see the credits!
+text = "When every button on the screen is this button, you will get to see the credits!
 Followed by: [color=#21258f]Quit[/color]
 Splits into: [color=#5ea000]Credits[/color] and [color=#5ea000]Credits[/color]"
 fit_content = true

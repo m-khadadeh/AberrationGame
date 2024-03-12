@@ -32,6 +32,6 @@ theme = ExtResource("1_cicew")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
 text = "When every button on the screen is this button, [shake rate=20.0 level=5 connected=0]the game starts[/shake]!
-Followed by: [color=#ad5527]Did you really think that'd work?[/color]
+Followed by: [color=#ad5527]Did you really think that would work?[/color]
 Splits into: [color=#aa0000]Start[/color] and [color=#aa0000]Start[/color]"
 fit_content = true

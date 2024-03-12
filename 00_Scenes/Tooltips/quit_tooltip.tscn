@@ -31,7 +31,7 @@ mouse_filter = 2
 theme = ExtResource("1_n7d5u")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "When every button on the screen is this button, you'll quit the game.
+text = "When every button on the screen is this button, you will quit the game... in a way.
 Followed by: [color=#aa0000]Start[/color]
 Splits into: [color=#21258f]Quit[/color] and [color=#21258f]Quit[/color]"
 fit_content = true
