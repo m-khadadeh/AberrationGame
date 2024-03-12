@@ -31,7 +31,7 @@ mouse_filter = 2
 theme = ExtResource("1_uh2ej")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "Clicking this toggles whether a button is locked or unlocked."
+text = "Clicking this makes the next button you click lock or unlock."
 fit_content = true
 
 [node name="HSeparator3" type="HSeparator" parent="."]
