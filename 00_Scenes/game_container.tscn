@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://hk1b21854g0g"]
+[gd_scene load_steps=25 format=3 uid="uid://hk1b21854g0g"]
 
 [ext_resource type="Script" path="res://01_Scripts/game_container.gd" id="1_dmtw6"]
 [ext_resource type="Resource" uid="uid://dm5dh4q32fdq6" path="res://03_Resources/ButtonLogic/split_on_click_logic.tres" id="2_3s6fy"]
@@ -23,6 +23,7 @@
 [ext_resource type="AudioStream" uid="uid://8i1dkdryvm7u" path="res://08_Audio/lock.wav" id="21_dwwmn"]
 [ext_resource type="AudioStream" uid="uid://bp440x8f1e2bu" path="res://08_Audio/glass_break.wav" id="22_e6abp"]
 [ext_resource type="AudioStream" uid="uid://n1846gkwk5hv" path="res://08_Audio/fanfare.wav" id="23_u477i"]
+[ext_resource type="Texture2D" uid="uid://d4nvpr1ojhv2c" path="res://02_Textures/lock.png" id="24_vl63c"]
 
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
@@ -43,3 +44,7 @@ sound_dictionary = {
 "split": ExtResource("22_e6abp"),
 "you_win": ExtResource("23_u477i")
 }
+
+[node name="Lock" type="Sprite2D" parent="."]
+visible = false
+texture = ExtResource("24_vl63c")

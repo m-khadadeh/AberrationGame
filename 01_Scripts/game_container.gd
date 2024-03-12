@@ -7,6 +7,7 @@ extends Node2D
 @onready var _button_parent : Node2D = $ButtonParent
 @onready var _tooltip_manager : TooltipManager = $TooltipManager
 @onready var _audio_manager : AudioManager = $AudioManager
+@onready var _lock_sprite : Sprite2D = $Lock
 
 @onready var _music_started : bool = false
 
@@ -41,6 +42,7 @@ var polygon_edge_dictionary : Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_lock_sprite.visible = false
 	_audio_manager.muted = false
 	_button_array.clear()
 	
@@ -111,6 +113,8 @@ func _process(delta):
 				_locking_queued = false
 		GameState.SLICING:
 			pass
+		GameState.LOCKING:
+			_lock_sprite.position = get_global_mouse_position()
 
 func _create_button(edge_dictionary : Dictionary, logic : ButtonLogic) -> SplittableButton:
 	var new_button : SplittableButton
@@ -210,6 +214,7 @@ func switch_state_to(new_state : GameState):
 		GameState.SLICING:
 			pass
 		GameState.LOCKING:
+			_lock_sprite.visible = false
 			for button in _button_array:
 				button.on_exit_locking_game_state()
 
@@ -225,6 +230,7 @@ func switch_state_to(new_state : GameState):
 			new_splitter.initialize(_points_of_intersection)
 			_current_splitter = new_splitter
 		GameState.LOCKING:
+			_lock_sprite.visible = true
 			for button in _button_array:
 				button.on_enter_locking_game_state()
 			
