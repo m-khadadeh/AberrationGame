@@ -26,6 +26,6 @@ func create_control_tree() -> Node:
 	new_node.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	new_node.theme = preload("res://06_Themes/game_theme.tres")
 	new_node.theme_type_variation = "CrystalLabel"
-	new_node.text = "[center]Credits[/center]\n[center]Created by Mohammed Khadadeh[/center]"
+	new_node.text = label_text
 	new_node.size_flags_vertical = Control.SIZE_EXPAND | Control.SIZE_SHRINK_CENTER
 	return new_node

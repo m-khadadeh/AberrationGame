@@ -9,9 +9,11 @@ func on_ready(button : SplittableButton):
 	button.add_tree_to_control(create_control_tree())
 
 func on_button_clicked(button : SplittableButton):
+	game_container.start_the_music()
 	super(button)
 	
 func on_neighbor_clicked(button : SplittableButton):
+	game_container.start_the_music()
 	super(button)
 
 func on_applied(button : SplittableButton):

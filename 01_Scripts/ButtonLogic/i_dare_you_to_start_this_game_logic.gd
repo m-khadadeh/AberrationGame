@@ -11,6 +11,10 @@ func on_ready(button : SplittableButton):
 		game_container.queue_split(split_amount)
 
 func on_button_clicked(button : SplittableButton):
+	if not button.is_locked():
+		game_container.play_sound_effect("button_click")
+	else:
+		game_container.play_sound_effect("sad_button_click")
 	game_container.increment_clicks()
 	
 func on_neighbor_clicked(button : SplittableButton):

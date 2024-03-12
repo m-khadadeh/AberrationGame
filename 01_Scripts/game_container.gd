@@ -6,8 +6,9 @@ extends Node2D
 
 @onready var _button_parent : Node2D = $ButtonParent
 @onready var _tooltip_manager : TooltipManager = $TooltipManager
+@onready var _audio_manager : AudioManager = $AudioManager
 
-var _mute : bool
+@onready var _music_started : bool = false
 
 var _button_array : Array
 var _line_array : Array
@@ -40,7 +41,7 @@ var polygon_edge_dictionary : Dictionary
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	_mute = false
+	_audio_manager.muted = false
 	_button_array.clear()
 	
 	_screen_corners.append(Vector2(0,0))
@@ -133,11 +134,14 @@ func _unhandled_input(event):
 				if event.is_action_pressed("left_click"):
 					if _current_splitter.advance_on_click():
 						if do_split():
+							play_sound_effect("split")
 							recreate_graph()
 							switch_state_to(GameState.SELECTING_BUTTONS)
 						else:
-							print("Split failed. Try again")
+							play_sound_effect("bad_split")
 							switch_state_to(GameState.SLICING)
+					else:
+						play_sound_effect("button_click")
 
 func on_button_lock_toggled():
 	switch_state_to(GameState.SELECTING_BUTTONS)
@@ -273,6 +277,7 @@ func quit_flood():
 func lock_flood():
 	for button in _button_array:
 		button.toggle_lock()
+	play_sound_effect("lock")
 	
 func slice_flood():
 	_splits_queued = randi_range(3, 6)
@@ -294,5 +299,12 @@ func reset_for_real():
 	reset_game(button_logic_types[0], true)
 
 func toggle_mute():
-	_mute = not _mute
-	print("toggled mute")
+	_audio_manager.toggle_mute()
+	
+func play_sound_effect(sound_name):
+	_audio_manager.play_sfx(sound_name)
+
+func start_the_music():
+	if not _music_started:
+		_music_started = true
+		_audio_manager.allow_music()

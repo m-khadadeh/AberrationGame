@@ -17,10 +17,13 @@ func on_ready(button : SplittableButton):
 func on_button_clicked(button : SplittableButton):
 	# print("Super Button pressed")
 	if not button.is_locked():
+		game_container.play_sound_effect("button_click")
 		button.set_button_logic(next_button_logic)
 		game_container.click_neighbors(button)
 		game_container.increment_clicks()
 		game_container.queue_apply()
+	else:
+		game_container.play_sound_effect("sad_button_click")
 	
 func on_neighbor_clicked(button : SplittableButton):
 	#print("Super Button neighbor pressed")

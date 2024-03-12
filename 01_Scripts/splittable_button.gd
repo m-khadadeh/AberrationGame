@@ -108,15 +108,18 @@ func _unhandled_input(event):
 			if event.is_action_released("left_click"):
 				switch_state(State.NORMAL)
 		State.LOCKED:
-			pass
+			if event.is_action_pressed("left_click") and _mouse_on_button and not _mouse_on_gutters and not event.is_echo():
+				_game_container.play_sound_effect("bad_split")
 		State.LOCK_HOVER:
 			if event.is_action_pressed("left_click") and not event.is_echo():
 				get_viewport().set_input_as_handled()
+				_game_container.play_sound_effect("lock")
 				switch_state(State.LOCKED)
 				lock_toggled.emit()
 		State.UNLOCK_HOVER:
 			if event.is_action_pressed("left_click") and not event.is_echo():
 				get_viewport().set_input_as_handled()
+				_game_container.play_sound_effect("lock")
 				switch_state(State.HOVERED)
 				lock_toggled.emit()
 

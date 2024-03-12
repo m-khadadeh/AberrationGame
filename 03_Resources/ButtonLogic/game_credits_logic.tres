@@ -6,7 +6,10 @@
 
 [resource]
 script = ExtResource("1_uy3rg")
-label_text = ""
+label_text = "[center]Credits[/center]
+
+[center]Created by Mohammed Khadadeh[/center]
+[center]Music by AudioCoffee: https://www.audiocoffee.net/[/center]"
 next_button_logic = ExtResource("1_5a1d5")
 color = Color(0.611765, 0.243137, 0.596078, 1)
 tooltip_scene = ExtResource("3_epeii")

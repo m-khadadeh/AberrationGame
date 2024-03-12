@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://hk1b21854g0g"]
+[gd_scene load_steps=24 format=3 uid="uid://hk1b21854g0g"]
 
 [ext_resource type="Script" path="res://01_Scripts/game_container.gd" id="1_dmtw6"]
 [ext_resource type="Resource" uid="uid://dm5dh4q32fdq6" path="res://03_Resources/ButtonLogic/split_on_click_logic.tres" id="2_3s6fy"]
@@ -16,6 +16,13 @@
 [ext_resource type="Resource" uid="uid://cry4clm4n8see" path="res://03_Resources/ButtonLogic/game_credits_logic.tres" id="13_yvjon"]
 [ext_resource type="Resource" uid="uid://cxcowk183bge2" path="res://03_Resources/ButtonLogic/game_end_logic.tres" id="14_3v4mu"]
 [ext_resource type="Resource" uid="uid://xncx25boaer5" path="res://03_Resources/ButtonLogic/mute_button_logic.tres" id="15_tw0uk"]
+[ext_resource type="PackedScene" uid="uid://bcsjd31da6pcc" path="res://00_Scenes/audio_manager.tscn" id="17_tecou"]
+[ext_resource type="AudioStream" uid="uid://bexx1wr01xq3x" path="res://08_Audio/glass_sfx.wav" id="18_4b4fh"]
+[ext_resource type="AudioStream" uid="uid://cfnq7grfbafp4" path="res://08_Audio/bad_glass_sfx.wav" id="19_d824j"]
+[ext_resource type="AudioStream" uid="uid://l3npifnllayx" path="res://08_Audio/bad_split_sfx.wav" id="20_k6220"]
+[ext_resource type="AudioStream" uid="uid://8i1dkdryvm7u" path="res://08_Audio/lock.wav" id="21_dwwmn"]
+[ext_resource type="AudioStream" uid="uid://bp440x8f1e2bu" path="res://08_Audio/glass_break.wav" id="22_e6abp"]
+[ext_resource type="AudioStream" uid="uid://n1846gkwk5hv" path="res://08_Audio/fanfare.wav" id="23_u477i"]
 
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
@@ -26,3 +33,13 @@ button_logic_types = [ExtResource("2_wpqcw"), ExtResource("3_0xbxj"), ExtResourc
 [node name="ButtonParent" type="Node2D" parent="."]
 
 [node name="TooltipManager" parent="." instance=ExtResource("13_vrgf5")]
+
+[node name="AudioManager" parent="." instance=ExtResource("17_tecou")]
+sound_dictionary = {
+"bad_split": ExtResource("20_k6220"),
+"button_click": ExtResource("18_4b4fh"),
+"lock": ExtResource("21_dwwmn"),
+"sad_button_click": ExtResource("19_d824j"),
+"split": ExtResource("22_e6abp"),
+"you_win": ExtResource("23_u477i")
+}

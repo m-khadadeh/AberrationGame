@@ -6,8 +6,10 @@ extends ButtonLogic
 func on_ready(button : SplittableButton):
 	button.clear_control_tree()
 	button.add_tree_to_control(create_control_tree())
+	game_container.play_sound_effect("you_win")
 
 func on_button_clicked(button : SplittableButton):
+	game_container.play_sound_effect("button_click")
 	game_container.reset_for_real()
 	
 func on_neighbor_clicked(button : SplittableButton):

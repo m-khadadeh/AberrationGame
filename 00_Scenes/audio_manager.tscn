@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcsjd31da6pcc"]
+
+[ext_resource type="Script" path="res://01_Scripts/audio_manager.gd" id="1_o2c4i"]
+[ext_resource type="AudioStream" uid="uid://do23gpqkd52j" path="res://08_Audio/710577__audiocoffee__travelers-tales-loop-ver(1).wav" id="2_38ir2"]
+
+[node name="AudioManager" type="Node"]
+script = ExtResource("1_o2c4i")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_38ir2")
+volume_db = -7.589
