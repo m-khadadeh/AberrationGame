@@ -31,7 +31,7 @@ func _ready():
 	polygon.area.mouse_entered.connect(on_mouse_enter_button)
 	polygon.area.mouse_exited.connect(on_mouse_exit_button)
 
-func initialize(game_container : GameContainer, edge_dictionary : Dictionary, gutter_manager : GutterManager, error_tolerance : float, logic : ButtonLogic, reset = true):	
+func initialize(game_container : GameContainer, edge_dictionary : Dictionary, error_tolerance : float, logic : ButtonLogic):	
 	_game_container = game_container
 	
 	var points : Array = edge_dictionary.keys()
@@ -60,10 +60,6 @@ func initialize(game_container : GameContainer, edge_dictionary : Dictionary, gu
 	_control_parent.set_size(size)
 	_control_parent.set_position(centroid - (size / 2))
 	
-	if reset:
-		gutter_manager.gutters_entered.connect(on_gutters_hovered)
-		gutter_manager.gutters_exited.connect(on_gutters_unhovered)
-	
 	var i = 0
 	var gem_uv_list : PackedVector2Array
 	var gem_polygon_list : PackedVector2Array
@@ -84,9 +80,12 @@ func initialize(game_container : GameContainer, edge_dictionary : Dictionary, gu
 	set_button_logic(logic)
 	switch_state(State.NORMAL)
 
+func on_tooltip_toggle():
+	if _mouse_on_button and not _mouse_on_gutters:
+		_logic.on_hovered(self)
+
 func _input(event):
 	if event.is_action_pressed("toggle_tooltips") and _mouse_on_button and not _mouse_on_gutters and not event.is_echo():
-		print("setting tooltip value")
 		_logic.on_hovered(self)
 
 func _unhandled_input(event):
@@ -120,6 +119,16 @@ func _unhandled_input(event):
 				get_viewport().set_input_as_handled()
 				switch_state(State.HOVERED)
 				lock_toggled.emit()
+
+func toggle_lock():
+	if state == State.LOCKED:
+		if _can_select_buttons and _mouse_on_button and not _mouse_on_gutters:
+			switch_state(State.HOVERED)
+		else:
+			switch_state(State.NORMAL)
+	else:
+		switch_state(State.LOCKED)
+	lock_toggled.emit()
 
 func split_across_line(line : LineData) -> Array:
 	return polygon.split_across_line(line)

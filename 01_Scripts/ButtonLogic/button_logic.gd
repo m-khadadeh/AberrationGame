@@ -19,6 +19,7 @@ func on_button_clicked(button : SplittableButton):
 	if not button.is_locked():
 		button.set_button_logic(next_button_logic)
 		game_container.click_neighbors(button)
+		game_container.increment_clicks()
 		game_container.queue_apply()
 	
 func on_neighbor_clicked(button : SplittableButton):

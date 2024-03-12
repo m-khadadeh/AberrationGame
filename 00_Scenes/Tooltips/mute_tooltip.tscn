@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqtlgvpbamyr3"]
+
+[ext_resource type="Theme" uid="uid://ddl7hlap0tgai" path="res://06_Themes/game_theme.tres" id="1_h7k3u"]
+
+[node name="MuteTooltip" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+theme = ExtResource("1_h7k3u")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_h7k3u")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "[center][color=#5b3d35]Mute[/color][/center]"
+fit_content = true
+
+[node name="HSeparator" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel3" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_h7k3u")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "Clicking this toggles whether the game is muted or unmuted."
+fit_content = true
+
+[node name="HSeparator2" type="HSeparator" parent="."]
+layout_mode = 2
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="."]
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_h7k3u")
+theme_type_variation = &"CustomToolTipLabel"
+bbcode_enabled = true
+text = "When every button on the screen is this button... wait that's impossible, nevermind.
+Followed by: [color=#5e7d3d]Press T to toggle tooltips. You'll need them![/color]
+Splits into: [color=#5b3d35]Mute[/color] and [color=#5b3d35]Mute[/color]"
+fit_content = true

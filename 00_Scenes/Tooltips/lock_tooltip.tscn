@@ -31,7 +31,7 @@ mouse_filter = 2
 theme = ExtResource("1_uh2ej")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "Toggles whether a button is locked or unlocked"
+text = "Clicking this toggles whether a button is locked or unlocked."
 fit_content = true
 
 [node name="HSeparator3" type="HSeparator" parent="."]
@@ -46,16 +46,4 @@ bbcode_enabled = true
 text = "When every button on the screen is this button, every button will toggle its locked/unlocked state.
 Followed by: [color=#baa126]Settings[/color]
 Splits into: [color=#680000]Lock[/color] and [color=#680000]Lock[/color]"
-fit_content = true
-
-[node name="HSeparator2" type="HSeparator" parent="."]
-layout_mode = 2
-
-[node name="RichTextLabel3" type="RichTextLabel" parent="."]
-layout_mode = 2
-mouse_filter = 2
-theme = ExtResource("1_uh2ej")
-theme_type_variation = &"CustomToolTipLabel"
-bbcode_enabled = true
-text = "The only way to advance this button is by clicking it."
 fit_content = true

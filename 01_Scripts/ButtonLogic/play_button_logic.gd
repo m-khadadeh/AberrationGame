@@ -15,7 +15,7 @@ func on_neighbor_clicked(button : SplittableButton):
 	super(button)
 
 func on_applied(button : SplittableButton):
-	print("You win!")
+	game_container.start_flood()
 
 func on_hovered(button : SplittableButton):
 	super(button)

@@ -7,3 +7,4 @@ resource_local_to_scene = true
 shader = ExtResource("1_4gni7")
 shader_parameter/polygon_color = Vector3(1, 1, 1)
 shader_parameter/edge_min = 0.0
+shader_parameter/hovered = null

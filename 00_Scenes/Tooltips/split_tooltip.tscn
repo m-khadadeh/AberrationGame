@@ -31,7 +31,7 @@ mouse_filter = 2
 theme = ExtResource("1_hh53l")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "Splits the buttons on the screen across a line."
+text = "Clicking this splits the buttons on the screen across a line."
 fit_content = true
 
 [node name="HSeparator3" type="HSeparator" parent="."]
@@ -43,7 +43,7 @@ mouse_filter = 2
 theme = ExtResource("1_hh53l")
 theme_type_variation = &"CustomToolTipLabel"
 bbcode_enabled = true
-text = "When every button on the screen is this button, you're gonna split way more times than you bargained for.
+text = "When every button on the screen is this button, you're gonna split [u]Way More Times Than You Bargained For[/u].
 Followed by: [color=#680000]Lock[/color]
 Splits into: [color=#821c63]Split[/color] and [color=#680000]Lock[/color]"
 fit_content = true

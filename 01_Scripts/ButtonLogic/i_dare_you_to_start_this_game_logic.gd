@@ -2,16 +2,16 @@ class_name IDareYouToStartThisGameLogic
 extends ButtonLogic
 
 @export_multiline var label_text : String
-@export var split_on_ready : bool
+@export var split_amount : int
 
 func on_ready(button : SplittableButton):
 	button.clear_control_tree()
 	button.add_tree_to_control(create_control_tree())
-	if split_on_ready:
-		game_container.queue_split()
+	if split_amount > 0:
+		game_container.queue_split(split_amount)
 
 func on_button_clicked(button : SplittableButton):
-	pass
+	game_container.increment_clicks()
 	
 func on_neighbor_clicked(button : SplittableButton):
 	pass

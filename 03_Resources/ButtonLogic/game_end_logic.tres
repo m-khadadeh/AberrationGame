@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="GameEndLogic" load_steps=4 format=3 uid="uid://cxcowk183bge2"]
+
+[ext_resource type="Resource" uid="uid://b48kpupt5mjar" path="res://03_Resources/ButtonLogic/i_dare_you_to_start_this_game.tres" id="1_27qfn"]
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/game_end_logic.gd" id="1_uk0rb"]
+[ext_resource type="PackedScene" uid="uid://dyvai61edey62" path="res://00_Scenes/Tooltips/you_win_tooltip.tscn" id="3_dudhe"]
+
+[resource]
+script = ExtResource("1_uk0rb")
+label_text = ""
+next_button_logic = ExtResource("1_27qfn")
+color = Color(0, 0.588235, 0.666667, 1)
+tooltip_scene = ExtResource("3_dudhe")

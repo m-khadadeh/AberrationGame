@@ -1,9 +1,8 @@
-[gd_scene load_steps=15 format=3 uid="uid://hk1b21854g0g"]
+[gd_scene load_steps=17 format=3 uid="uid://hk1b21854g0g"]
 
 [ext_resource type="Script" path="res://01_Scripts/game_container.gd" id="1_dmtw6"]
 [ext_resource type="Resource" uid="uid://dm5dh4q32fdq6" path="res://03_Resources/ButtonLogic/split_on_click_logic.tres" id="2_3s6fy"]
 [ext_resource type="Resource" uid="uid://b48kpupt5mjar" path="res://03_Resources/ButtonLogic/i_dare_you_to_start_this_game.tres" id="2_wpqcw"]
-[ext_resource type="PackedScene" uid="uid://lmvuxd3sugcn" path="res://00_Scenes/gutter_manager.tscn" id="2_x50wr"]
 [ext_resource type="Resource" uid="uid://c6qbvf1l6xlu4" path="res://03_Resources/ButtonLogic/i_dare_you.tres" id="3_0xbxj"]
 [ext_resource type="Resource" uid="uid://85ag2w5vybah" path="res://03_Resources/ButtonLogic/to_start_this_game.tres" id="4_yga31"]
 [ext_resource type="Resource" uid="uid://dmw6nctnccqpv" path="res://03_Resources/ButtonLogic/play_button_logic.tres" id="6_560x1"]
@@ -14,14 +13,15 @@
 [ext_resource type="Resource" uid="uid://bsj8al43uyuga" path="res://03_Resources/ButtonLogic/lock_button_logic.tres" id="11_20qry"]
 [ext_resource type="Resource" uid="uid://7kophoxctusp" path="res://03_Resources/ButtonLogic/make_sure_you_read_the_tooltips.tres" id="12_pwpxo"]
 [ext_resource type="PackedScene" uid="uid://c60yn7ijwisw" path="res://00_Scenes/tooltip_manager.tscn" id="13_vrgf5"]
+[ext_resource type="Resource" uid="uid://cry4clm4n8see" path="res://03_Resources/ButtonLogic/game_credits_logic.tres" id="13_yvjon"]
+[ext_resource type="Resource" uid="uid://cxcowk183bge2" path="res://03_Resources/ButtonLogic/game_end_logic.tres" id="14_3v4mu"]
+[ext_resource type="Resource" uid="uid://xncx25boaer5" path="res://03_Resources/ButtonLogic/mute_button_logic.tres" id="15_tw0uk"]
 
 [node name="GameContainer" type="Node2D"]
 script = ExtResource("1_dmtw6")
 split_padding = 10.0
 error_tolerance = 0.1
-button_logic_types = [ExtResource("2_wpqcw"), ExtResource("3_0xbxj"), ExtResource("4_yga31"), ExtResource("2_3s6fy"), ExtResource("6_560x1"), ExtResource("7_6fc1u"), ExtResource("8_w6mnm"), ExtResource("9_lrad1"), ExtResource("10_1mpdp"), ExtResource("11_20qry"), ExtResource("12_pwpxo")]
-
-[node name="GutterManager" parent="." instance=ExtResource("2_x50wr")]
+button_logic_types = [ExtResource("2_wpqcw"), ExtResource("3_0xbxj"), ExtResource("4_yga31"), ExtResource("2_3s6fy"), ExtResource("6_560x1"), ExtResource("7_6fc1u"), ExtResource("8_w6mnm"), ExtResource("9_lrad1"), ExtResource("10_1mpdp"), ExtResource("11_20qry"), ExtResource("12_pwpxo"), ExtResource("13_yvjon"), ExtResource("14_3v4mu"), ExtResource("15_tw0uk")]
 
 [node name="ButtonParent" type="Node2D" parent="."]
 

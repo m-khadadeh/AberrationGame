@@ -13,10 +13,10 @@ func on_button_clicked(button : SplittableButton):
 	super(button)
 	
 func on_neighbor_clicked(button : SplittableButton):
-	pass
+	super(button)
 
 func on_applied(button : SplittableButton):
-	pass
+	game_container.lock_flood()
 
 func on_hovered(button : SplittableButton):
 	super(button)

@@ -14,7 +14,8 @@ func on_neighbor_clicked(button : SplittableButton):
 	super(button)
 
 func on_applied(button : SplittableButton):
-	pass
+	if label_text[0] == "P": #ress T to toggle tooltips
+		game_container.t_for_tooltips_flood()
 
 func on_hovered(button : SplittableButton):
 	super(button)

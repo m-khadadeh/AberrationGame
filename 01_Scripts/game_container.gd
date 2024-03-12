@@ -4,9 +4,10 @@ extends Node2D
 @onready var _button_scene : PackedScene = preload("res://00_Scenes/splittable_button.tscn")
 @onready var _splitter_scene : PackedScene = preload("res://00_Scenes/splitter.tscn")
 
-@onready var _gutter_parent : GutterManager = $GutterManager
 @onready var _button_parent : Node2D = $ButtonParent
 @onready var _tooltip_manager : TooltipManager = $TooltipManager
+
+var _mute : bool
 
 var _button_array : Array
 var _line_array : Array
@@ -19,6 +20,12 @@ var _splitting_queued : bool
 var _locking_queued : bool
 var _applying_queued : bool
 
+var _splits_queued : int
+
+var _total_clicks : int
+
+var _saved_stats : Array
+
 @onready var show_tooltips : bool = false
 
 enum GameState {SELECTING_BUTTONS, SLICING, LOCKING}
@@ -28,8 +35,12 @@ var current_state : GameState
 @export var error_tolerance : float
 @export var button_logic_types : Array
 
+var starting_polygon_segments : Array
+var polygon_edge_dictionary : Dictionary
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	_mute = false
 	_button_array.clear()
 	
 	_screen_corners.append(Vector2(0,0))
@@ -37,32 +48,43 @@ func _ready():
 	_screen_corners.append(Vector2(get_viewport_rect().size.x, get_viewport_rect().size.y))
 	_screen_corners.append(Vector2(0, get_viewport_rect().size.y))
 	
+	for button_type in button_logic_types:
+		button_type.game_container = self
+	
+	reset_game(button_logic_types[0])
+
+func reset_game(starting_logic : ButtonLogic, reset_clicks : bool = true):
+	_button_array.clear()
+	_line_array.clear()
+	_points_of_intersection.clear()
+	
+	if reset_clicks:
+		_total_clicks = 0
+		_tooltip_manager.show_tooltip(false)
+	
+	if _button_parent.get_child_count() > 0:
+		for button in _button_parent.get_children():
+			button.queue_free()
+	
 	_line_array.append(LineData.new(_screen_corners[0], Vector2(1,0)))
 	_line_array.append(LineData.new(_screen_corners[1], Vector2(0,1)))
 	_line_array.append(LineData.new(_screen_corners[2], Vector2(-1,0)))
 	_line_array.append(LineData.new(_screen_corners[3], Vector2(0,-1)))
 	
-	var starting_polygon_segments : Array
 	starting_polygon_segments.append(LineSegment.new(_line_array[0], [_line_array[0].get_intersection_parameter(_line_array[3]), _line_array[0].get_intersection_parameter(_line_array[1])]))
 	starting_polygon_segments.append(LineSegment.new(_line_array[1], [_line_array[1].get_intersection_parameter(_line_array[0]), _line_array[1].get_intersection_parameter(_line_array[2])]))
 	starting_polygon_segments.append(LineSegment.new(_line_array[2], [_line_array[2].get_intersection_parameter(_line_array[1]), _line_array[2].get_intersection_parameter(_line_array[3])]))
 	starting_polygon_segments.append(LineSegment.new(_line_array[3], [_line_array[3].get_intersection_parameter(_line_array[2]), _line_array[3].get_intersection_parameter(_line_array[0])]))
 	
-	var polygon_edge_dictionary : Dictionary
 	polygon_edge_dictionary[_screen_corners[0]] = starting_polygon_segments[0]
 	polygon_edge_dictionary[_screen_corners[1]] = starting_polygon_segments[1]
 	polygon_edge_dictionary[_screen_corners[2]] = starting_polygon_segments[2]
 	polygon_edge_dictionary[_screen_corners[3]] = starting_polygon_segments[3]
 	
-	for button_type in button_logic_types:
-		button_type.game_container = self
-	
-	_button_array.append(_create_button(polygon_edge_dictionary, button_logic_types[0]))
+	_button_array.append(_create_button(polygon_edge_dictionary, starting_logic))
 	
 	recalculate_points_of_intersection()
 	recreate_graph()
-	
-	_tooltip_manager.show_tooltip(false)
 	
 	switch_state_to(GameState.SELECTING_BUTTONS)
 
@@ -70,13 +92,7 @@ func _ready():
 func _process(delta):
 	match current_state:
 		GameState.SELECTING_BUTTONS:
-			if _splitting_queued:
-				switch_state_to(GameState.SLICING)
-				_splitting_queued = false
-			elif _locking_queued:
-				switch_state_to(GameState.LOCKING)
-				_locking_queued = false
-			elif _applying_queued:
+			if _applying_queued:
 				var checking_type : ButtonLogic = _button_array[0]._logic
 				var all_same = true
 				for button in _button_array:
@@ -86,6 +102,12 @@ func _process(delta):
 				if all_same:
 					checking_type.on_applied(_button_array[0])
 				_applying_queued = false
+			elif _splits_queued > 0:
+				switch_state_to(GameState.SLICING)
+				_splits_queued -= 1
+			elif _locking_queued:
+				switch_state_to(GameState.LOCKING)
+				_locking_queued = false
 		GameState.SLICING:
 			pass
 
@@ -94,7 +116,7 @@ func _create_button(edge_dictionary : Dictionary, logic : ButtonLogic) -> Splitt
 	new_button = _button_scene.instantiate()
 	_button_parent.add_child(new_button)
 	
-	new_button.initialize(self, edge_dictionary, _gutter_parent, error_tolerance, logic)
+	new_button.initialize(self, edge_dictionary, error_tolerance, logic)
 	new_button.lock_toggled.connect(on_button_lock_toggled)
 	return new_button
 
@@ -149,17 +171,11 @@ func do_split() -> bool:
 	
 	if safe_to_continue:
 		for button in buttons_to_split:
-			_button_array[button].initialize(self, buttons_to_split[button], _gutter_parent, error_tolerance, old_button_new_logic[button], false)
+			_button_array[button].initialize(self, buttons_to_split[button], error_tolerance, old_button_new_logic[button])
 		for i in range(buttons_to_append.size()):
 			_button_array.append(_create_button(buttons_to_append[i], new_button_new_logic[i]))
 			
-		#var scaled_normal_vector = Vector2(line_data.direction_vector.y, -line_data.direction_vector.x).normalized() * split_padding / 2
-		#var gutter_points : PackedVector2Array
-		#gutter_points.append(line_data.drawing_endpoints[0] + scaled_normal_vector)
-		#gutter_points.append(line_data.drawing_endpoints[0] - scaled_normal_vector)
-		#gutter_points.append(line_data.drawing_endpoints[1] - scaled_normal_vector)
-		#gutter_points.append(line_data.drawing_endpoints[1] + scaled_normal_vector)
-		#_gutter_parent.add_gutter(gutter_points)
+		queue_apply()
 		return true
 	return false
 
@@ -225,8 +241,8 @@ func is_onscreen(point : Vector2) -> bool:
 	point.y >= _screen_corners[0].y and \
 	point.y <= _screen_corners[2].y
 
-func queue_split():
-	_splitting_queued = true
+func queue_split(amount : int = 1):
+	_splits_queued = amount
 
 func queue_lock():
 	_locking_queued = true
@@ -240,3 +256,43 @@ func queue_apply():
 
 func create_tooltip(scene : PackedScene):
 	_tooltip_manager.set_tree(scene)
+
+func start_flood():
+	_saved_stats = [_total_clicks, _button_array.size()]
+	reset_game(button_logic_types[12], false)
+
+func credits_flood():
+	reset_game(button_logic_types[11], false)
+	
+func quit_flood():
+	if _button_parent.get_child_count() > 0:
+		for button in _button_parent.get_children():
+			button.queue_free()
+	get_tree().quit()
+
+func lock_flood():
+	for button in _button_array:
+		button.toggle_lock()
+	
+func slice_flood():
+	_splits_queued = randi_range(3, 6)
+	
+func t_for_tooltips_flood():
+	show_tooltips = not show_tooltips
+	_tooltip_manager.show_tooltip(show_tooltips)
+	for button in _button_array:
+		button.on_tooltip_toggle()
+	_button_array[0]._logic.on_neighbor_clicked(_button_array[0]) # switches the button to the next type
+
+func increment_clicks():
+	_total_clicks += 1
+	
+func get_stats() -> Array:
+	return _saved_stats
+
+func reset_for_real():
+	reset_game(button_logic_types[0], true)
+
+func toggle_mute():
+	_mute = not _mute
+	print("toggled mute")

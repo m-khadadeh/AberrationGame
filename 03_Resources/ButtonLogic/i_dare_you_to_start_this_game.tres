@@ -9,7 +9,7 @@
 script = ExtResource("1_jjkgu")
 label_text = "I Dare You To
 Start This Game"
-split_on_ready = true
+split_amount = 2
 split_button_logic_replace = ExtResource("3_ntbj5")
 split_button_logic_next = ExtResource("2_xi4gw")
 color = Color(0.133333, 0.262745, 0.341176, 1)

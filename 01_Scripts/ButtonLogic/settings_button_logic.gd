@@ -1,6 +1,8 @@
 class_name SettingsButtonLogic
 extends ButtonLogic
 
+@export var mute_logic : ButtonLogic
+
 func on_ready(button : SplittableButton):
 	next_button_logic = load("res://03_Resources/ButtonLogic/make_sure_you_read_the_tooltips.tres")
 	split_button_logic_next = self
@@ -15,7 +17,8 @@ func on_neighbor_clicked(button : SplittableButton):
 	super(button)
 
 func on_applied(button : SplittableButton):
-	pass
+	button.set_button_logic(mute_logic)
+	game_container.queue_apply()
 
 func on_hovered(button : SplittableButton):
 	super(button)

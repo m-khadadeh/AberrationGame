@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="MuteButtonLogic" load_steps=3 format=3 uid="uid://xncx25boaer5"]
+
+[ext_resource type="Script" path="res://01_Scripts/ButtonLogic/mute_button_logic.gd" id="1_lopiq"]
+[ext_resource type="PackedScene" uid="uid://cqtlgvpbamyr3" path="res://00_Scenes/Tooltips/mute_tooltip.tscn" id="2_4747x"]
+
+[resource]
+script = ExtResource("1_lopiq")
+color = Color(0.356863, 0.239216, 0.207843, 1)
+tooltip_scene = ExtResource("2_4747x")
