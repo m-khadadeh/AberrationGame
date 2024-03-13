@@ -36,8 +36,18 @@ func similar_within_tolerance(a : float, b : float, tolerance : float) -> bool:
 	return abs(a - b) < tolerance
 
 func contains_point(point : Vector2, tolerance : float) -> bool:
-	var x_param = (point.x - single_point.x) / direction_vector.x
-	var y_param = (point.y - single_point.y) / direction_vector.y
+	var x_param : float
+	var y_param : float
+	if direction_vector.x != 0.0:
+		x_param = (point.x - single_point.x) / direction_vector.x
+	if direction_vector.y != 0.0:
+		y_param = (point.y - single_point.y) / direction_vector.y
+	if direction_vector.x == 0.0:
+		if similar_within_tolerance(point.x, single_point.x, tolerance):
+			x_param = y_param
+	if direction_vector.y == 0.0:
+		if similar_within_tolerance(point.y, single_point.y, tolerance):
+			y_param = x_param
 	return similar_within_tolerance(x_param, y_param, tolerance)
 
 func is_parallel(line : LineData, tolerance : float) -> bool:
